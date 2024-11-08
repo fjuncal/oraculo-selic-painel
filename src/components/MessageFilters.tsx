@@ -66,18 +66,32 @@ const FiltersContainer = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
 `;
 
 const Input = styled.input`
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 0.9rem;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+  &:focus {
+    border-color: #0070f3;
+  }
 `;
 
 const Select = styled.select`
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 0.9rem;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+  &:focus {
+    border-color: #0070f3;
+  }
 `;

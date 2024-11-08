@@ -17,18 +17,20 @@ export default function MessageStatusDetails({
 }: MessageStatusDetailsProps) {
   return (
     <StatusContainer>
-      <h2>Status da Mensagem ID: {messageId}</h2>
-      <p>
-        <strong>Envio:</strong> {status.sent.status} - {status.sent.detail}
-      </p>
-      <p>
-        <strong>Chegada:</strong> {status.arrived.status} -{" "}
-        {status.arrived.detail}
-      </p>
-      <p>
-        <strong>Processamento:</strong> {status.processed.status} -{" "}
-        {status.processed.detail}
-      </p>
+      <StatusText>
+        <h2>Status da Mensagem ID: {messageId}</h2>
+        <p>
+          <strong>Envio:</strong> {status.sent.status} - {status.sent.detail}
+        </p>
+        <p>
+          <strong>Chegada:</strong> {status.arrived.status} -{" "}
+          {status.arrived.detail}
+        </p>
+        <p>
+          <strong>Processamento:</strong> {status.processed.status} -{" "}
+          {status.processed.detail}
+        </p>
+      </StatusText>
     </StatusContainer>
   );
 }
@@ -36,8 +38,17 @@ export default function MessageStatusDetails({
 const StatusContainer = styled.div`
   margin-top: 20px;
   padding: 20px;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f9fafb;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #4f46e5;
+`;
+
+const StatusText = styled.p`
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #333;
+  & strong {
+    color: #4f46e5;
+  }
 `;
