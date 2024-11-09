@@ -1,6 +1,5 @@
 import MessageDetailsModal from "@/components/MessageDetailsModal";
 import MessageFilters from "@/components/MessageFilters";
-import MessageStatusDetails from "@/components/MessageStatusDetails";
 import MessageTable from "@/components/MessageTable";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -8,9 +7,12 @@ import styled from "styled-components";
 
 interface Message {
   id: number;
-  content: string;
+  codigoMensagem: string;
+  canal: string;
+  xml: string;
+  stringSelic: string;
   status: string;
-  created_at: string;
+  dataInclusao: string;
 }
 
 export interface MessageStatus {
@@ -45,6 +47,24 @@ export default function Messages() {
         console.error("Erro ao buscar mensagens:", error);
       });
   }, []);
+
+  useEffect(() => {
+    const filtered = messages.filter((message) => {
+      const matchesContent = message.codigoMensagem
+        .toLowerCase()
+        .includes(searchContent.toLowerCase());
+      const matchesStatus = statusFilter
+        ? message.status === statusFilter
+        : true;
+      const matchesDate =
+        startDate && endDate
+          ? new Date(message.dataInclusao) >= new Date(startDate) &&
+            new Date(message.dataInclusao) <= new Date(endDate)
+          : true;
+      return matchesContent && matchesStatus && matchesDate;
+    });
+    setFilteredMessages(filtered);
+  }, [searchContent, statusFilter, startDate, endDate, messages]);
 
   const fetchMessageStatus = async (id: number) => {
     try {
