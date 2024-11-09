@@ -11,7 +11,7 @@ interface Message {
   canal: string;
   xml: string;
   stringSelic: string;
-  status: string;
+  statusFinal: string; // Exibe o status final na tabela
   dataInclusao: string;
 }
 
@@ -47,23 +47,24 @@ export default function Messages() {
         console.error("Erro ao buscar mensagens:", error);
       });
   }, []);
-
   useEffect(() => {
-    const filtered = messages.filter((message) => {
-      const matchesContent = message.codigoMensagem
-        .toLowerCase()
-        .includes(searchContent.toLowerCase());
-      const matchesStatus = statusFilter
-        ? message.status === statusFilter
-        : true;
-      const matchesDate =
-        startDate && endDate
-          ? new Date(message.dataInclusao) >= new Date(startDate) &&
-            new Date(message.dataInclusao) <= new Date(endDate)
+    if (messages) {
+      const filtered = messages.filter((message) => {
+        const matchesContent = message.codigoMensagem
+          .toLowerCase()
+          .includes(searchContent.toLowerCase());
+        const matchesStatus = statusFilter
+          ? message.statusFinal === statusFilter // Filtra pelo status final
           : true;
-      return matchesContent && matchesStatus && matchesDate;
-    });
-    setFilteredMessages(filtered);
+        const matchesDate =
+          startDate && endDate
+            ? new Date(message.dataInclusao) >= new Date(startDate) &&
+              new Date(message.dataInclusao) <= new Date(endDate)
+            : true;
+        return matchesContent && matchesStatus && matchesDate;
+      });
+      setFilteredMessages(filtered);
+    }
   }, [searchContent, statusFilter, startDate, endDate, messages]);
 
   const fetchMessageStatus = async (id: number) => {
@@ -71,6 +72,8 @@ export default function Messages() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/status?message_id=${id}`
       );
+      console.log(response.data);
+
       setSelectedMessageStatus(response.data);
       setSelectedMessageId(id);
       setError("");

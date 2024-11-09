@@ -39,10 +39,10 @@ export default function MessageFilters({
         }
       >
         <option value="">Todos os Status</option>
-        <option value="RECEIVED">Recebido</option>
-        <option value="SENDING">Processando</option>
-        <option value="FAILED">Falhou</option>
-        <option value="PROCESSED">Completo</option>
+        <option value="ENVIANDO">ENVIANDO</option>
+        <option value="EM_PROCESSAMENTO">Em Processamento</option>
+        <option value="PROCESSADO">Processado</option>
+        <option value="FALHA">Falha</option>
       </Select>
       <Input
         type="date"
