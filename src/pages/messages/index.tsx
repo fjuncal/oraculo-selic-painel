@@ -13,6 +13,7 @@ interface Message {
   stringSelic: string;
   statusFinal: string; // Exibe o status final na tabela
   dataInclusao: string;
+  correlationId: string;
 }
 
 export interface MessageStatus {

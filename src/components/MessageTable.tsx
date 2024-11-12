@@ -8,6 +8,7 @@ interface Message {
   stringSelic: string;
   statusFinal: string;
   dataInclusao: string;
+  correlationId: string;
 }
 
 interface MessageTableProps {
@@ -36,6 +37,7 @@ export default function MessageTable({
         <thead>
           <tr>
             <Th>ID</Th>
+            <Th>Correl ID</Th>
             <Th>Código</Th>
             <Th>Canal</Th>
             <Th>Status Final</Th> {/* Apenas status final na tabela */}
@@ -48,6 +50,7 @@ export default function MessageTable({
             messages.map((message) => (
               <StyledRow key={message.id}>
                 <Td>{message.id}</Td>
+                <Td>{message.correlationId}</Td>
                 <Td>{message.codigoMensagem}</Td>
                 <Td>{message.canal}</Td>
                 <Td>{message.statusFinal}</Td> {/* Exibe o status final */}
