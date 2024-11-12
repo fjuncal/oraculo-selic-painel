@@ -1,7 +1,16 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { FiMenu, FiHome, FiMessageSquare, FiActivity } from "react-icons/fi"; // Ícones do react-icons
+import {
+  FiMenu,
+  FiHome,
+  FiMessageSquare,
+  FiActivity,
+  FiDollarSign,
+} from "react-icons/fi";
+import Image from "next/image";
 import { useState } from "react";
+import logoSelic from "../../public/selic-logo/selic-logo.png";
+import fotoSelic from "../../public/selic-logo/selic-foto.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,7 +18,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AppContainer>
       <TopBar>
-        <Logo onClick={() => router.push("/")}>Minha Aplicação</Logo>
+        <LogoContainer onClick={() => router.push("/")}>
+          <StyledImage src={logoSelic} alt="Logo SELIC" />
+        </LogoContainer>
         <NavLinks>
           <NavItem onClick={() => router.push("/")}>
             <FiHome size={20} />
@@ -69,18 +80,27 @@ const AppContainer = styled.div`
 
 const TopBar = styled.div`
   width: 100%;
+  height: 60px;
   background-color: #4f46e5;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 10px 15px 10px 0px; /* Reduzido o padding à esquerda */
   position: relative;
 `;
 
-const Logo = styled.div`
-  font-size: 1.5rem;
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
+`;
+
+const StyledImage = styled(Image)`
+  width: 270px;
+  height: auto;
+  max-height: 270px;
+  margin-right: 8px;
 `;
 
 const NavLinks = styled.div`
