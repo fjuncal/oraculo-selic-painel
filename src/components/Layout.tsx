@@ -1,17 +1,61 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { FiMenu, FiHome, FiMessageSquare, FiActivity } from "react-icons/fi"; // Ícones do react-icons
+import { useState } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   return (
     <AppContainer>
-      <Sidebar>
-        <NavItem onClick={() => router.push("/")}>Início</NavItem>
-        <NavItem onClick={() => router.push("/mensagens")}>Mensagens</NavItem>
-        <NavItem onClick={() => router.push("/status")}>
-          Status de Processamento
-        </NavItem>
-      </Sidebar>
+      <TopBar>
+        <Logo onClick={() => router.push("/")}>Minha Aplicação</Logo>
+        <NavLinks>
+          <NavItem onClick={() => router.push("/")}>
+            <FiHome size={20} />
+            <span>Início</span>
+          </NavItem>
+          <NavItem onClick={() => router.push("/mensagens")}>
+            <FiMessageSquare size={20} />
+            <span>Mensagens</span>
+          </NavItem>
+          <NavItem onClick={() => router.push("/status")}>
+            <FiActivity size={20} />
+            <span>Status</span>
+          </NavItem>
+        </NavLinks>
+        <HamburgerMenu onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <FiMenu size={24} />
+        </HamburgerMenu>
+      </TopBar>
+      {isMenuOpen && (
+        <MobileMenu>
+          <MobileNavItem
+            onClick={() => {
+              setIsMenuOpen(false);
+              router.push("/");
+            }}
+          >
+            Início
+          </MobileNavItem>
+          <MobileNavItem
+            onClick={() => {
+              setIsMenuOpen(false);
+              router.push("/mensagens");
+            }}
+          >
+            Mensagens
+          </MobileNavItem>
+          <MobileNavItem
+            onClick={() => {
+              setIsMenuOpen(false);
+              router.push("/status");
+            }}
+          >
+            Status
+          </MobileNavItem>
+        </MobileMenu>
+      )}
       <ContentContainer>{children}</ContentContainer>
     </AppContainer>
   );
@@ -19,31 +63,80 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 const AppContainer = styled.div`
   display: flex;
+  flex-direction: column;
   height: 100vh;
-  width: 100vw;
 `;
 
-const Sidebar = styled.div`
-  width: 250px;
+const TopBar = styled.div`
+  width: 100%;
+  background-color: #4f46e5;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  position: relative;
+`;
+
+const Logo = styled.div`
+  font-size: 1.5rem;
+  cursor: pointer;
+`;
+
+const NavLinks = styled.div`
+  display: flex;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const NavItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+
+  &:hover {
+    color: #ddd;
+  }
+
+  & span {
+    font-weight: normal;
+  }
+`;
+
+const HamburgerMenu = styled.div`
+  display: none;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+const MobileMenu = styled.div`
   background-color: #4f46e5;
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 10px;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 `;
 
-const NavItem = styled.button`
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-size: 1rem;
-  margin: 10px 0;
-  text-align: left;
+const MobileNavItem = styled.div`
+  padding: 10px 20px;
   cursor: pointer;
-  transition: color 0.2s ease;
+  font-size: 1rem;
 
   &:hover {
-    color: #ddd;
+    background-color: #3730a3;
   }
 `;
 
