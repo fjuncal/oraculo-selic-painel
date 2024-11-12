@@ -42,7 +42,7 @@ export default function MessageFilters({
         <option value="ENVIANDO">ENVIANDO</option>
         <option value="EM_PROCESSAMENTO">Em Processamento</option>
         <option value="PROCESSADO">Processado</option>
-        <option value="FALHA">Falha</option>
+        <option value="NÃO PROCESSADO">Falha</option>
       </Select>
       <Input
         type="date"
