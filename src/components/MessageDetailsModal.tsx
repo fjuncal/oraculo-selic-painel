@@ -4,7 +4,7 @@ import { MessageStatus } from "../pages/messages/index";
 interface MessageDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  messageId: number | null;
+  messageId: string | null;
   status: MessageStatus | null;
 }
 

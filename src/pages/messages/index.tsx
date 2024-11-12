@@ -31,7 +31,7 @@ export default function Messages() {
   const [endDate, setEndDate] = useState<string>("");
   const [selectedMessageStatus, setSelectedMessageStatus] =
     useState<MessageStatus | null>(null);
-  const [selectedMessageId, setSelectedMessageId] = useState<number | null>(
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,15 +68,15 @@ export default function Messages() {
     }
   }, [searchContent, statusFilter, startDate, endDate, messages]);
 
-  const fetchMessageStatus = async (id: number) => {
+  const fetchMessageStatus = async (correlationId: string) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/status?message_id=${id}`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/status?correlationId=${correlationId}`
       );
       console.log(response.data);
 
       setSelectedMessageStatus(response.data);
-      setSelectedMessageId(id);
+      setSelectedMessageId(correlationId);
       setError("");
       setIsModalOpen(true);
     } catch (err) {

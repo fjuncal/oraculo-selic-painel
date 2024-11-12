@@ -13,7 +13,7 @@ interface Message {
 
 interface MessageTableProps {
   messages: Message[];
-  onStatusClick: (id: number) => void;
+  onStatusClick: (correlationId: string) => void;
 }
 export default function MessageTable({
   messages,
@@ -56,7 +56,9 @@ export default function MessageTable({
                 <Td>{message.statusFinal}</Td> {/* Exibe o status final */}
                 <Td>{formatDateTime(message.dataInclusao)}</Td>
                 <Td>
-                  <ActionButton onClick={() => onStatusClick(message.id)}>
+                  <ActionButton
+                    onClick={() => onStatusClick(message.correlationId)}
+                  >
                     Ver Status
                   </ActionButton>
                 </Td>
