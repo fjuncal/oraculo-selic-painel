@@ -22,7 +22,7 @@ export interface MessageStatus {
   processed: { status: string; detail: string };
 }
 
-export default function Messages() {
+export default function Mensagens() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [filteredMessages, setFilteredMessages] = useState<Message[]>([]);
   const [searchContent, setSearchContent] = useState<string>("");
