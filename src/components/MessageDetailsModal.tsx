@@ -25,24 +25,24 @@ export default function MessageDetailsModal({
         </Header>
         <Content>
           <StatusRow>
-            <StatusIcon status="sent" />
-            <StatusText>
+            <StatusIcon status={status.sent.status} />
+            <StatusText isError={status.sent.status === "NÃO PROCESSADO"}>
               <strong>Envio:</strong> {status.sent.status} -{" "}
               {status.sent.detail}
             </StatusText>
           </StatusRow>
           <Divider />
           <StatusRow>
-            <StatusIcon status="arrived" />
-            <StatusText>
+            <StatusIcon status={status.arrived.status} />
+            <StatusText isError={status.arrived.status === "NÃO PROCESSADO"}>
               <strong>Chegada:</strong> {status.arrived.status} -{" "}
               {status.arrived.detail}
             </StatusText>
           </StatusRow>
           <Divider />
           <StatusRow>
-            <StatusIcon status="processed" />
-            <StatusText>
+            <StatusIcon status={status.processed.status} />
+            <StatusText isError={status.processed.status === "NÃO PROCESSADO"}>
               <strong>Processamento:</strong> {status.processed.status} -{" "}
               {status.processed.detail}
             </StatusText>
@@ -112,18 +112,20 @@ const StatusIcon = styled.div<{ status: string }>`
   height: 12px;
   border-radius: 50%;
   background-color: ${(props) =>
-    props.status === "sent"
+    props.status === "NÃO PROCESSADO"
+      ? "red"
+      : props.status === "ENVIANDO"
       ? "#4f46e5"
-      : props.status === "arrived"
+      : props.status === "EM_PROCESSAMENTO"
       ? "#34d399"
-      : props.status === "processed"
+      : props.status === "PROCESSADO"
       ? "#f97316"
       : "#333"};
 `;
 
-const StatusText = styled.p`
+const StatusText = styled.p<{ isError: boolean }>`
   font-size: 0.95rem;
-  color: #333;
+  color: ${(props) => (props.isError ? "red" : "#25b818")};
   margin: 0;
 `;
 
