@@ -26,7 +26,7 @@ export default function MessageFilters({
     <FiltersContainer>
       <Input
         type="text"
-        placeholder="Buscar por conteúdo"
+        placeholder="Buscar por código"
         value={searchContent}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setSearchContent(e.target.value)
