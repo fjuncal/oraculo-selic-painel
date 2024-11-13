@@ -188,25 +188,6 @@ export default function CenarioForm() {
   );
 }
 
-// Styled component for visualizing content
-const ContentViewer = styled.pre`
-  background-color: #f3f4f6;
-  padding: 20px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  font-family: monospace;
-  margin-top: 20px;
-`;
-
-const XmlViewer = styled.pre`
-  background-color: #f3f4f6;
-  padding: 20px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  font-family: monospace;
-  margin-top: 20px;
-`;
-
 const BotaoVisualizar = styled.div`
   display: flex;
   justify-content: center;
@@ -325,13 +306,18 @@ const FormContainer = styled.div`
 `;
 
 const Sector = styled.div`
-  flex: 1 1 45%;
+  flex: 1 1 48%; /* Define a largura de 48% para que cada setor ocupe metade da linha */
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-`;
+  margin-bottom: 20px;
 
+  /* Ocupa a largura total da linha se houver apenas um setor */
+  &:nth-child(odd):only-child {
+    flex: 1 1 48%;
+  }
+`;
 const SectorTitle = styled.h3`
   color: #4f46e5;
   font-size: 1.5rem;
@@ -340,10 +326,14 @@ const SectorTitle = styled.h3`
 
 const FieldsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
+  flex-wrap: wrap;
+  gap: 10px; /* Espaçamento entre os campos */
 
+  /* Define que cada campo ocupe 100% da largura em telas pequenas */
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end; /* Alinha o conteúdo (botão) à direita */

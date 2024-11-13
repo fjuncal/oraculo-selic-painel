@@ -45,14 +45,18 @@ const ErrorMessage = styled.span`
 const FieldContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
-`;
+  width: 100%; /* Faz com que cada campo ocupe a largura total do container */
 
+  /* Define o comportamento responsivo para exibir lado a lado em telas maiores */
+  @media (min-width: 768px) {
+    width: 48%; /* Define a largura para caber dois campos por linha */
+  }
+`;
 const Input = styled.input`
-  padding: 8px;
+  padding: 6px 10px; /* Reduz o padding para tornar o campo menor */
   border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Diminui o tamanho da fonte */
   background-color: #f9f9f9;
   color: #333;
   margin-top: 5px;
