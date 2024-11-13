@@ -25,11 +25,14 @@ export default function CenarioForm() {
 
       <SelectWrapper>
         <Label>Código da Mensagem:</Label>
-        <Select value={codigoMensagem} onChange={handleCodigoChange}>
+        <CustomSelect value={codigoMensagem} onChange={handleCodigoChange}>
           <option value="">Selecione</option>
-          <option value="SEL1052">SEL1052</option>
-          <option value="SEL1054">SEL1054</option>
-        </Select>
+          {Object.keys(mensagemConfig).map((key) => (
+            <option key={key} value={key}>
+              {key}
+            </option>
+          ))}
+        </CustomSelect>
       </SelectWrapper>
 
       {selectedConfig && (
@@ -86,14 +89,25 @@ const Label = styled.label`
   color: #333;
 `;
 
-const Select = styled.select`
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+const CustomSelect = styled.select`
+  padding: 10px 12px;
   font-size: 1rem;
-  background-color: #f9f9f9;
-  color: #333;
-  text-align: center;
+  color: #4f46e5;
+  font-weight: bold;
+  border: 2px solid #4f46e5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: #3730a3;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
+  }
 `;
 
 const FormContainer = styled.div`
