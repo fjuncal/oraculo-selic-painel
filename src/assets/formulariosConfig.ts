@@ -8,7 +8,7 @@ export interface FormularioConfig {
 }
 
 export const formularios = {
-  informacoesBasicas: [
+  Comando: [
     {
       label: "Emissor",
       tagXML: "Emi",
@@ -27,7 +27,7 @@ export const formularios = {
     },
     // Outros campos que podem estar em Informações Básicas
   ],
-  detalhesFinanceiros: [
+  Partes: [
     {
       label: "Tipo de Repasse Financeiro",
       name: "TipoRepasseFinanceiro",

@@ -1,24 +1,25 @@
-// utils/configHelper.ts
-import { formularios } from '../formulariosConfig'; // Importa os campos do formulariosConfig
-import { mensagemConfig } from '../mensagemConfig'; // Importa a configuração do código de mensagem
+import { formularios } from "../formulariosConfig"; // Configuração dos formulários
+import { mensagemConfig } from "../mensagemConfig"; // Configuração das mensagens
 
-// Função para pegar os campos por código da mensagem
-export function getCamposParaCodigoMensagem(codigoMensagem: keyof typeof mensagemConfig) {
-    const config = mensagemConfig[codigoMensagem];  // Pega a configuração do código da mensagem
-    if (!config) return { informacoesBasicas: [], detalhesFinanceiros: [] };
+// Função para pegar os campos de acordo com o código da mensagem
+export function getCamposParaCodigoMensagem(
+  codigoMensagem: keyof typeof mensagemConfig
+) {
+  const config = mensagemConfig[codigoMensagem];
 
-  // Pega os campos para informacoesBasicas e detalhesFinanceiros, com base nos nomes de campos definidos
-   // Pega os campos para informacoesBasicas e detalhesFinanceiros, com base nos nomes de campos definidos
-   const informacoesBasicas = config.informacoesBasicas
-   .map(fieldName => formularios.informacoesBasicas.find(field => field.name === fieldName))
-   .filter(Boolean); // Remove valores `undefined` no caso de campos não encontrados
+  if (!config) {
+    return {}; // Retorna um objeto vazio se o código de mensagem não existir
+  }
 
- const detalhesFinanceiros = config.detalhesFinanceiros
-   .map(fieldName => formularios.detalhesFinanceiros.find(field => field.name === fieldName))
-   .filter(Boolean); // Remove valores `undefined` no caso de campos não encontrados
+  // Para cada setor no `config`, convertemos `setor` explicitamente para `keyof typeof formularios`
+  const camposPorSetor = Object.keys(config).reduce((acc, setor) => {
+    const setorKey = setor as keyof typeof formularios;
+    acc[setorKey] =
+      config[setorKey]?.map((fieldName: string) =>
+        formularios[setorKey]?.find((field) => field.name === fieldName)
+      ) || [];
+    return acc;
+  }, {} as { [key in keyof typeof formularios]: any[] });
 
-  return {
-    informacoesBasicas,
-    detalhesFinanceiros,
-  };
+  return camposPorSetor;
 }

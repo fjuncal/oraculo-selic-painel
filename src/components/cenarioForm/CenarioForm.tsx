@@ -19,8 +19,6 @@ export default function CenarioForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState("");
-  const [xmlContent, setXmlContent] = useState<string>("");
-  const [content, setContent] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,11 +44,13 @@ export default function CenarioForm() {
     const newErrors: { [key: string]: boolean } = {};
 
     Object.entries(campos || {}).forEach(([sector, fields]) => {
-      fields.forEach((field) => {
-        if (field?.required && !formData[field.name]) {
-          newErrors[field.name] = true;
-        }
-      });
+      if (Array.isArray(fields)) {
+        (fields as FormularioConfig[]).forEach((field) => {
+          if (field?.required && !formData[field.name]) {
+            newErrors[field.name] = true;
+          }
+        });
+      }
     });
 
     setErrors(newErrors);
@@ -154,17 +154,16 @@ export default function CenarioForm() {
       />
       {campos && (
         <FormContainer>
-          {Object.entries(campos).map(([setor, fields]) => (
-            <Sector key={setor}>
-              <SectorTitle>
-                {setor === "informacoesBasicas"
-                  ? "Informações Básicas"
-                  : "Detalhes Financeiros"}
-              </SectorTitle>
+          {/* Renderiza dinamicamente os setores com base no arquivo de configuração */}
+          {Object.entries(campos).map(([sector, fields]) => (
+            <Sector key={sector}>
+              <SectorTitle>{sector}</SectorTitle>
               <FieldsContainer>
-                {fields
+                {(fields as FormularioConfig[])
                   .filter(
-                    (field): field is FormularioConfig => field !== undefined
+                    (
+                      field: FormularioConfig | undefined
+                    ): field is FormularioConfig => field !== undefined
                   )
                   .map((field: FormularioConfig) => (
                     <CenarioFormField
@@ -172,7 +171,7 @@ export default function CenarioForm() {
                       field={field}
                       value={formData[field.name] || ""}
                       onChange={handleInputChange}
-                      error={!!errors[field.name]} // Passa o erro
+                      error={!!errors[field.name]}
                     />
                   ))}
               </FieldsContainer>
