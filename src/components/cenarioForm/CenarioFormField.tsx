@@ -5,6 +5,8 @@ interface FieldProps {
     label: string;
     name: string;
     type: string;
+    required: boolean;
+    length: number;
   };
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,6 +25,7 @@ export default function CenarioFormField({
         name={field.name}
         value={value}
         onChange={onChange}
+        maxLength={field.length}
       />
     </FieldContainer>
   );
