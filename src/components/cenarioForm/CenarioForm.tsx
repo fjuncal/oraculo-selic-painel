@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { mensagemConfig } from "../../assets/mensagemConfig";
+import { FieldConfig, mensagemConfig } from "../../assets/mensagemConfig";
 import ScenarioFormField from "./CenarioFormField";
 import styled from "styled-components";
 
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
-  const [activeTab, setActiveTab] = useState<string>("Informações Básicas");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -15,15 +14,10 @@ export default function CenarioForm() {
 
   const handleCodigoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCodigoMensagem(e.target.value);
-    setFormData({}); // Limpa os dados do formulário ao mudar o tipo de mensagem
+    setFormData({});
   };
-  const currentFields = mensagemConfig[codigoMensagem] || [];
-  const basicFields = currentFields.filter((field) =>
-    field.name.includes("basico")
-  );
-  const financialFields = currentFields.filter((field) =>
-    field.name.includes("financeiro")
-  );
+
+  const selectedConfig = mensagemConfig[codigoMensagem];
 
   return (
     <PageContainer>
@@ -38,35 +32,27 @@ export default function CenarioForm() {
         </Select>
       </SelectWrapper>
 
-      {currentFields.length > 0 && (
+      {selectedConfig && (
         <FormContainer>
-          <Sector>
-            <SectorTitle>Informações Básicas</SectorTitle>
-            <FieldsContainer>
-              {basicFields.map((field) => (
-                <ScenarioFormField
-                  key={field.name}
-                  field={field}
-                  value={formData[field.name] || ""}
-                  onChange={handleInputChange}
-                />
-              ))}
-            </FieldsContainer>
-          </Sector>
-
-          <Sector>
-            <SectorTitle>Detalhes Financeiros</SectorTitle>
-            <FieldsContainer>
-              {financialFields.map((field) => (
-                <ScenarioFormField
-                  key={field.name}
-                  field={field}
-                  value={formData[field.name] || ""}
-                  onChange={handleInputChange}
-                />
-              ))}
-            </FieldsContainer>
-          </Sector>
+          {Object.entries(selectedConfig).map(([setor, fields]) => (
+            <Sector key={setor}>
+              <SectorTitle>
+                {setor === "informacoesBasicas"
+                  ? "Informações Básicas"
+                  : "Detalhes Financeiros"}
+              </SectorTitle>
+              <FieldsContainer>
+                {fields.map((field: FieldConfig) => (
+                  <ScenarioFormField
+                    key={field.name}
+                    field={field}
+                    value={formData[field.name] || ""}
+                    onChange={handleInputChange}
+                  />
+                ))}
+              </FieldsContainer>
+            </Sector>
+          ))}
           <SubmitButton type="submit">Salvar Cenário</SubmitButton>
         </FormContainer>
       )}
@@ -86,13 +72,12 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-// Wrapper para o seletor de código da mensagem
 const SelectWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 40px; /* Espaçamento maior para separar do formulário */
+  margin-bottom: 40px;
 `;
 
 const Label = styled.label`
