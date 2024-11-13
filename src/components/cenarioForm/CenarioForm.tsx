@@ -306,16 +306,18 @@ const FormContainer = styled.div`
 `;
 
 const Sector = styled.div`
-  flex: 1 1 48%; /* Define a largura de 48% para que cada setor ocupe metade da linha */
+  flex: 1 1 48%; /* Ocupa 48% da largura para permitir dois setores lado a lado */
+  max-width: 48%; /* Limita a largura máxima do setor a 48% */
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
 
-  /* Ocupa a largura total da linha se houver apenas um setor */
-  &:nth-child(odd):only-child {
-    flex: 1 1 48%;
+  /* Alinha o setor no centro se houver apenas um setor na linha */
+  &:only-child {
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 const SectorTitle = styled.h3`
