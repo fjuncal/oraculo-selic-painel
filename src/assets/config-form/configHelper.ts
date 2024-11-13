@@ -1,25 +1,31 @@
-import { formularios } from "../formulariosConfig"; // Configuração dos formulários
-import { mensagemConfig } from "../mensagemConfig"; // Configuração das mensagens
+import { formularios, FormularioConfig } from "../formulariosConfig";
+import { mensagemConfig } from "../mensagemConfig";
 
-// Função para pegar os campos de acordo com o código da mensagem
 export function getCamposParaCodigoMensagem(
   codigoMensagem: keyof typeof mensagemConfig
 ) {
   const config = mensagemConfig[codigoMensagem];
+  if (!config) return null;
 
-  if (!config) {
-    return {}; // Retorna um objeto vazio se o código de mensagem não existir
-  }
+  return Object.entries(config).reduce((acc, [setor, campos]) => {
+    // Convertemos `setor` explicitamente para uma das chaves do tipo `formularios`
+    const setorTyped = setor as keyof typeof formularios;
 
-  // Para cada setor no `config`, convertemos `setor` explicitamente para `keyof typeof formularios`
-  const camposPorSetor = Object.keys(config).reduce((acc, setor) => {
-    const setorKey = setor as keyof typeof formularios;
-    acc[setorKey] =
-      config[setorKey]?.map((fieldName: string) =>
-        formularios[setorKey]?.find((field) => field.name === fieldName)
-      ) || [];
+    // Mapeamos os campos e filtramos qualquer `undefined`
+    acc[setor] = campos
+      .map((campoName) => {
+        const isRequired = campoName.startsWith("#");
+        const cleanCampoName = isRequired ? campoName.slice(1) : campoName;
+        const campoConfig = formularios[setorTyped]?.find(
+          (campo) => campo.name === cleanCampoName
+        );
+
+        return campoConfig
+          ? { ...campoConfig, required: isRequired }
+          : undefined;
+      })
+      .filter((campo): campo is FormularioConfig => campo !== undefined); // Filtra `undefined`
+
     return acc;
-  }, {} as { [key in keyof typeof formularios]: any[] });
-
-  return camposPorSetor;
+  }, {} as Record<string, FormularioConfig[]>);
 }

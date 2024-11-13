@@ -14,7 +14,6 @@ export const formularios = {
       tagXML: "Emi",
       name: "Emissor",
       type: "text",
-      required: true,
       length: 10,
     },
     {
@@ -22,7 +21,6 @@ export const formularios = {
       tagXML: "NUOp",
       name: "NumeroOperacaoSelic",
       type: "text",
-      required: true,
       length: 8,
     },
     // Outros campos que podem estar em Informações Básicas
@@ -33,7 +31,6 @@ export const formularios = {
       name: "ContaCedente",
       tagXML: "ctCed",
       type: "text",
-      required: true,
       length: 8,
     },
     {
@@ -41,7 +38,6 @@ export const formularios = {
       name: "ContaCessionaria",
       tagXML: "ctCes",
       type: "text",
-      required: true,
       length: 8,
     },
     // Outros campos de Detalhes Financeiros
@@ -52,7 +48,6 @@ export const formularios = {
       name: "PrecoUnitario",
       tagXML: "Pu",
       type: "number",
-      required: true,
       length: 8,
     },
     {
@@ -60,7 +55,6 @@ export const formularios = {
       name: "ValorFinanceiro",
       tagXML: "VlrFinanc",
       type: "number",
-      required: false,
       length: 10,
     },
     // Outros campos de Detalhes Financeiros
