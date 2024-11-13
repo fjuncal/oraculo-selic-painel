@@ -1,11 +1,13 @@
 export const mensagemConfig = {
   SEL1052: {
     Comando: ["Emissor", "NumeroOperacaoSelic"],
-    Partes: ["TipoRepasseFinanceiro", "ValorFinanceiro"],
+    Partes: ["ContaCedente", "ContaCessionaria"],
+    Financeiro: ["ValorFinanceiro", "PrecoUnitario"],
   },
   SEL1054: {
     Comando: ["Emissor"],
-    Partes: ["TipoRepasseFinanceiro", "ValorFinanceiro"],
+    Partes: ["ContaCedente", "ContaCessionaria"],
+    Financeiro: ["ValorFinanceiro", "PrecoUnitario"],
   },
   // Outros códigos de mensagem podem definir outros formulários conforme necessário
 };

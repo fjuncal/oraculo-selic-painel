@@ -22,19 +22,38 @@ export const formularios = {
       tagXML: "NUOp",
       name: "NumeroOperacaoSelic",
       type: "text",
-      required: false,
-      length: 12,
+      required: true,
+      length: 8,
     },
     // Outros campos que podem estar em Informações Básicas
   ],
   Partes: [
     {
-      label: "Tipo de Repasse Financeiro",
-      name: "TipoRepasseFinanceiro",
-      tagXML: "TpRep",
+      label: "Conta Cedente",
+      name: "ContaCedente",
+      tagXML: "ctCed",
       type: "text",
       required: true,
-      length: 15,
+      length: 8,
+    },
+    {
+      label: "Conta Cessionária",
+      name: "ContaCessionaria",
+      tagXML: "ctCes",
+      type: "text",
+      required: true,
+      length: 8,
+    },
+    // Outros campos de Detalhes Financeiros
+  ],
+  Financeiro: [
+    {
+      label: "Preço Unitário",
+      name: "PrecoUnitario",
+      tagXML: "Pu",
+      type: "number",
+      required: true,
+      length: 8,
     },
     {
       label: "Valor Financeiro",
