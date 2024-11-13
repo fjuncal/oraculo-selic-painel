@@ -62,19 +62,32 @@ export default function CenarioForm() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateFields()) {
+      const xmlContent =
+        canal === "MENSAGERIA" ? generateXML(formData, codigoMensagem) : null;
+      const stringSelicContent =
+        canal === "IOS"
+          ? generatePositionalString(formData, codigoMensagem)
+          : null;
+
       const cenarioData = {
         descricao,
         tipoCenario,
         canal,
         codigoMsg: codigoMensagem,
         ...formData, // Inclui os campos dinâmicos do formulário
+        XML: xmlContent,
+        stringSelic: stringSelicContent,
       };
-
-      console.log(cenarioData);
 
       try {
         const result = await saveCenario(cenarioData);
         alert(`Cenário salvo com sucesso! ID: ${result.id}`);
+        setDescricao("");
+        setTipoCenario("Corretagem intermediação");
+        setCanal("");
+        setCodigoMensagem("");
+        setFormData({});
+        setErrors({});
       } catch (error) {
         alert("Erro ao salvar cenário");
       }
