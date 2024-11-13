@@ -7,6 +7,7 @@ import { getCamposParaCodigoMensagem } from "@/assets/config-form/configHelper";
 import { FormularioConfig } from "@/assets/formulariosConfig";
 import { generatePositionalString } from "@/utils/generatePositionalString";
 import Modal from "./Modal";
+import { saveCenario } from "@/services/cenarioService";
 
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
@@ -22,8 +23,9 @@ export default function CenarioForm() {
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const { name, value, type } = e.target;
+    const parsedValue = type === "number" ? parseFloat(value) : value; // Converte para número se for do tipo number
+    setFormData((prevData) => ({ ...prevData, [name]: parsedValue }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: false }));
   };
 
@@ -57,10 +59,25 @@ export default function CenarioForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateFields()) {
-      console.log("Formulário enviado com sucesso!");
+      const cenarioData = {
+        descricao,
+        tipoCenario,
+        canal,
+        codigoMsg: codigoMensagem,
+        ...formData, // Inclui os campos dinâmicos do formulário
+      };
+
+      console.log(cenarioData);
+
+      try {
+        const result = await saveCenario(cenarioData);
+        alert(`Cenário salvo com sucesso! ID: ${result.id}`);
+      } catch (error) {
+        alert("Erro ao salvar cenário");
+      }
     } else {
       console.log("Campos obrigatórios não preenchidos");
     }
