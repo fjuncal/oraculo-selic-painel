@@ -6,6 +6,7 @@ import { generateXML } from "../../utils/generateXML";
 import { getCamposParaCodigoMensagem } from "@/assets/config-form/configHelper";
 import { FormularioConfig } from "@/assets/formulariosConfig";
 import { generatePositionalString } from "@/utils/generatePositionalString";
+import Modal from "./Modal";
 
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
@@ -15,6 +16,9 @@ export default function CenarioForm() {
     "Corretagem intermediação"
   );
   const [canal, setCanal] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalContent, setModalContent] = useState("");
   const [xmlContent, setXmlContent] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
@@ -63,14 +67,20 @@ export default function CenarioForm() {
   };
 
   const handleVisualizeClick = () => {
+    let title = "";
+    let content = "";
+
     if (canal === "MENSAGERIA") {
-      const xml = generateXML(formData, codigoMensagem);
-      setXmlContent(xml);
-      console.log(xml);
+      title = "Visualizar XML";
+      content = generateXML(formData, codigoMensagem);
     } else {
-      const posString = generatePositionalString(formData, codigoMensagem);
-      setContent(posString);
+      title = "Visualizar String SELIC";
+      content = generatePositionalString(formData, codigoMensagem);
     }
+
+    setModalTitle(title);
+    setModalContent(content);
+    setIsModalOpen(true);
   };
 
   const campos =
@@ -135,9 +145,13 @@ export default function CenarioForm() {
           </VisualizeButton>
         )}
       </BotaoVisualizar>
-      {xmlContent && <XmlViewer>{xmlContent}</XmlViewer>}{" "}
-      {content && <ContentViewer>{content}</ContentViewer>}
-      {/* Exibe o XML gerado */}
+      {/* Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalTitle}
+        content={modalContent}
+      />
       {campos && (
         <FormContainer>
           {Object.entries(campos).map(([setor, fields]) => (
@@ -164,8 +178,12 @@ export default function CenarioForm() {
               </FieldsContainer>
             </Sector>
           ))}
-          <SubmitButton onClick={handleFormSubmit}>Salvar Cenário</SubmitButton>
         </FormContainer>
+      )}
+      {codigoMensagem && (
+        <ButtonContainer>
+          <SubmitButton onClick={handleFormSubmit}>Salvar Cenário</SubmitButton>
+        </ButtonContainer>
       )}
     </PageContainer>
   );
@@ -327,6 +345,12 @@ const FieldsContainer = styled.div`
   gap: 10px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end; /* Alinha o conteúdo (botão) à direita */
+  margin-top: 16px;
+`;
+
 const SubmitButton = styled.button`
   padding: 12px;
   border: none;
@@ -337,7 +361,7 @@ const SubmitButton = styled.button`
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  align-self: flex-start;
+
   &:hover {
     background-color: #3730a3;
   }
