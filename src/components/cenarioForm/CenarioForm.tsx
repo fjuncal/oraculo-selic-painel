@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { generateXML } from "../../utils/generateXML";
 import { getCamposParaCodigoMensagem } from "@/assets/config-form/configHelper";
 import { FormularioConfig } from "@/assets/formulariosConfig";
+import { generatePositionalString } from "@/utils/generatePositionalString";
 
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
@@ -15,6 +16,7 @@ export default function CenarioForm() {
   );
   const [canal, setCanal] = useState<string>("");
   const [xmlContent, setXmlContent] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,11 +38,11 @@ export default function CenarioForm() {
       setXmlContent(xml);
       console.log(xml);
     } else {
-      console.log("Exibindo String SELIC...");
+      const posString = generatePositionalString(formData, codigoMensagem);
+      setContent(posString);
     }
   };
 
-  // Chama a função para carregar os campos corretos com base no código da mensagem
   const campos =
     codigoMensagem in mensagemConfig
       ? getCamposParaCodigoMensagem(
@@ -105,6 +107,7 @@ export default function CenarioForm() {
         )}
       </BotaoVisualizar>
       {xmlContent && <XmlViewer>{xmlContent}</XmlViewer>}{" "}
+      {content && <ContentViewer>{content}</ContentViewer>}
       {/* Exibe o XML gerado */}
       {campos && (
         <FormContainer>
@@ -137,6 +140,16 @@ export default function CenarioForm() {
     </PageContainer>
   );
 }
+
+// Styled component for visualizing content
+const ContentViewer = styled.pre`
+  background-color: #f3f4f6;
+  padding: 20px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: monospace;
+  margin-top: 20px;
+`;
 
 const XmlViewer = styled.pre`
   background-color: #f3f4f6;

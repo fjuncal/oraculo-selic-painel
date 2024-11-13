@@ -4,6 +4,7 @@ export interface FormularioConfig {
   type: string;
   tagXML: string;
   required: boolean;
+  length: number; // Adiciona o comprimento para a string posicional
 }
 
 export const formularios = {
@@ -14,6 +15,7 @@ export const formularios = {
       name: "Emissor",
       type: "text",
       required: true,
+      length: 10,
     },
     {
       label: "Numero Operação Selic",
@@ -21,6 +23,7 @@ export const formularios = {
       name: "NumeroOperacaoSelic",
       type: "text",
       required: false,
+      length: 12,
     },
     // Outros campos que podem estar em Informações Básicas
   ],
@@ -31,6 +34,7 @@ export const formularios = {
       tagXML: "TpRep",
       type: "text",
       required: true,
+      length: 15,
     },
     {
       label: "Valor Financeiro",
@@ -38,6 +42,7 @@ export const formularios = {
       tagXML: "VlrFinanc",
       type: "number",
       required: false,
+      length: 10,
     },
     // Outros campos de Detalhes Financeiros
   ],
