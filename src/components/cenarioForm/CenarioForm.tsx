@@ -17,19 +17,49 @@ export default function CenarioForm() {
   const [canal, setCanal] = useState<string>("");
   const [xmlContent, setXmlContent] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: false }));
   };
 
   const handleCodigoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCodigoMensagem(e.target.value);
     setFormData({});
+    setErrors({});
   };
 
   const handleCanalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCanal(e.target.value);
+  };
+
+  const validateFields = () => {
+    const campos = getCamposParaCodigoMensagem(
+      codigoMensagem as keyof typeof mensagemConfig
+    );
+    const newErrors: { [key: string]: boolean } = {};
+
+    Object.entries(campos || {}).forEach(([sector, fields]) => {
+      fields.forEach((field) => {
+        if (field?.required && !formData[field.name]) {
+          newErrors[field.name] = true;
+        }
+      });
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateFields()) {
+      console.log("Formulário enviado com sucesso!");
+    } else {
+      console.log("Campos obrigatórios não preenchidos");
+    }
   };
 
   const handleVisualizeClick = () => {
@@ -89,7 +119,6 @@ export default function CenarioForm() {
         <Label>Código da Mensagem:</Label>
         <CustomSelect value={codigoMensagem} onChange={handleCodigoChange}>
           <option value="">Selecione</option>
-          {/* Mapeia as chaves de mensagemConfig diretamente para exibir todas as opções */}
           {Object.keys(mensagemConfig).map((key) => (
             <option key={key} value={key}>
               {key}
@@ -129,12 +158,13 @@ export default function CenarioForm() {
                       field={field}
                       value={formData[field.name] || ""}
                       onChange={handleInputChange}
+                      error={!!errors[field.name]} // Passa o erro
                     />
                   ))}
               </FieldsContainer>
             </Sector>
           ))}
-          <SubmitButton type="submit">Salvar Cenário</SubmitButton>
+          <SubmitButton onClick={handleFormSubmit}>Salvar Cenário</SubmitButton>
         </FormContainer>
       )}
     </PageContainer>
