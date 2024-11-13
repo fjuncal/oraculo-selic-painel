@@ -5,7 +5,8 @@ import {
   FiHome,
   FiMessageSquare,
   FiActivity,
-  FiDollarSign,
+  FiFile,
+  FiChevronDown,
 } from "react-icons/fi";
 import Image from "next/image";
 import { useState } from "react";
@@ -14,6 +15,8 @@ import fotoSelic from "../../public/selic-logo/selic-foto.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const router = useRouter();
   return (
     <AppContainer>
@@ -26,6 +29,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <FiHome size={20} />
             <span>Início</span>
           </NavItem>
+          <DropdownContainer
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <NavItem>
+              <FiFile size={20} />
+              <span>Cenário</span>
+              <FiChevronDown size={16} style={{ marginLeft: "5px" }} />
+            </NavItem>
+            {isDropdownOpen && (
+              <DropdownMenu>
+                <DropdownItem onClick={() => router.push("/cenario/cadastrar")}>
+                  Cadastrar
+                </DropdownItem>
+                <DropdownItem onClick={() => router.push("/cenario/consultar")}>
+                  Consultar
+                </DropdownItem>
+              </DropdownMenu>
+            )}
+          </DropdownContainer>
           <NavItem onClick={() => router.push("/mensagens")}>
             <FiMessageSquare size={20} />
             <span>Mensagens</span>
@@ -35,35 +58,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <span>Status</span>
           </NavItem>
         </NavLinks>
+
         <HamburgerMenu onClick={() => setIsMenuOpen(!isMenuOpen)}>
           <FiMenu size={24} />
         </HamburgerMenu>
       </TopBar>
+
       {isMenuOpen && (
         <MobileMenu>
-          <MobileNavItem
-            onClick={() => {
-              setIsMenuOpen(false);
-              router.push("/");
-            }}
-          >
-            Início
-          </MobileNavItem>
-          <MobileNavItem
-            onClick={() => {
-              setIsMenuOpen(false);
-              router.push("/mensagens");
-            }}
-          >
+          <MobileNavItem onClick={() => router.push("/")}>Início</MobileNavItem>
+          <MobileNavItem onClick={() => router.push("/mensagens")}>
             Mensagens
           </MobileNavItem>
-          <MobileNavItem
-            onClick={() => {
-              setIsMenuOpen(false);
-              router.push("/status");
-            }}
-          >
+          <MobileNavItem onClick={() => router.push("/status")}>
             Status
+          </MobileNavItem>
+          <MobileNavItem onClick={() => router.push("/cenario/cadastrar")}>
+            Cadastrar Cenário
+          </MobileNavItem>
+          <MobileNavItem onClick={() => router.push("/cenario/consultar")}>
+            Consultar Cenário
           </MobileNavItem>
         </MobileMenu>
       )}
@@ -86,7 +100,7 @@ const TopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px 10px 0px; /* Reduzido o padding à esquerda */
+  padding: 10px 15px 10px 0px;
   position: relative;
 `;
 
@@ -125,6 +139,34 @@ const NavItem = styled.div`
 
   & span {
     font-weight: normal;
+  }
+`;
+
+// Dropdown components
+const DropdownContainer = styled.div`
+  position: relative;
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 5px 0;
+  z-index: 1000;
+`;
+
+const DropdownItem = styled.div`
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
 
