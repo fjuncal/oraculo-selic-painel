@@ -6,6 +6,11 @@ import styled from "styled-components";
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
+  const [descricao, setDescricao] = useState<string>("");
+  const [tipoCenario, setTipoCenario] = useState<string>(
+    "Corretagem intermediação"
+  );
+  const [canal, setCanal] = useState<string>("Mensageria");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,6 +27,36 @@ export default function CenarioForm() {
   return (
     <PageContainer>
       <Title>Cadastrar Cenário</Title>
+
+      <FixedFieldsContainer>
+        <InputWrapper>
+          <Label>Descrição do Cenário:</Label>
+          <TextArea
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            placeholder="Digite uma descrição para o cenário"
+          />
+        </InputWrapper>
+
+        <InputWrapper>
+          <Label>Tipo de Cenário:</Label>
+          <Select
+            value={tipoCenario}
+            onChange={(e) => setTipoCenario(e.target.value)}
+          >
+            <option value="Simulação">Simulação</option>
+            <option value="Produção">Produção</option>
+          </Select>
+        </InputWrapper>
+
+        <InputWrapper>
+          <Label>Canal:</Label>
+          <Select value={canal} onChange={(e) => setCanal(e.target.value)}>
+            <option value="Mensageria">Mensageria</option>
+            <option value="IOS">IOS</option>
+          </Select>
+        </InputWrapper>
+      </FixedFieldsContainer>
 
       <SelectWrapper>
         <Label>Código da Mensagem:</Label>
@@ -75,6 +110,45 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
+const FixedFieldsContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-bottom: 15px;
+`;
+
+const Label = styled.label`
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+`;
+
+const TextArea = styled.textarea`
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #ffffff;
+  resize: vertical;
+  min-height: 40px; /* Controla a altura mínima */
+  max-height: 120px; /* Controla a altura máxima */
+`;
+
+const Select = styled.select`
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #ffffff;
+`;
+
 const SelectWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -83,21 +157,17 @@ const SelectWrapper = styled.div`
   margin-bottom: 40px;
 `;
 
-const Label = styled.label`
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-`;
-
 const CustomSelect = styled.select`
-  padding: 10px 12px;
+  padding: 10px 15px;
   font-size: 1rem;
-  color: #4f46e5;
   font-weight: bold;
+  color: #4f46e5;
   border: 2px solid #4f46e5;
   border-radius: 8px;
+  background-color: #ffffff;
   cursor: pointer;
   transition: border-color 0.3s ease;
+  appearance: none;
 
   &:hover {
     border-color: #3730a3;
