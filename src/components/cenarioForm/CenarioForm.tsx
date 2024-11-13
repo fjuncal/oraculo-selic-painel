@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { FieldConfig, mensagemConfig } from "../../assets/mensagemConfig";
+import { mensagemConfig } from "../../assets/mensagemConfig";
 import CenarioFormField from "./CenarioFormField";
 import styled from "styled-components";
+import { generateXML } from "../../utils/generateXML";
+import { getCamposParaCodigoMensagem } from "@/assets/config-form/configHelper";
+import { FormularioConfig } from "@/assets/formulariosConfig";
 
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
@@ -11,6 +14,7 @@ export default function CenarioForm() {
     "Corretagem intermediação"
   );
   const [canal, setCanal] = useState<string>("");
+  const [xmlContent, setXmlContent] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,22 +32,27 @@ export default function CenarioForm() {
 
   const handleVisualizeClick = () => {
     if (canal === "MENSAGERIA") {
-      console.log("Gerando XML...");
-      // Chame a função de geração de XML aqui
+      const xml = generateXML(formData, codigoMensagem);
+      setXmlContent(xml);
+      console.log(xml);
     } else {
       console.log("Exibindo String SELIC...");
-      // Adicione aqui a lógica para exibir a string SELIC
     }
   };
 
-  const selectedConfig = mensagemConfig[codigoMensagem];
+  // Chama a função para carregar os campos corretos com base no código da mensagem
+  const campos =
+    codigoMensagem in mensagemConfig
+      ? getCamposParaCodigoMensagem(
+          codigoMensagem as keyof typeof mensagemConfig
+        )
+      : null;
 
   return (
     <PageContainer>
       <Header>
         <Title>Cadastrar Cenário</Title>
       </Header>
-
       <FixedFieldsContainer>
         <InputWrapper>
           <Label>Descrição do Cenário:</Label>
@@ -74,11 +83,11 @@ export default function CenarioForm() {
           </Select>
         </InputWrapper>
       </FixedFieldsContainer>
-
       <SelectWrapper>
         <Label>Código da Mensagem:</Label>
         <CustomSelect value={codigoMensagem} onChange={handleCodigoChange}>
           <option value="">Selecione</option>
+          {/* Mapeia as chaves de mensagemConfig diretamente para exibir todas as opções */}
           {Object.keys(mensagemConfig).map((key) => (
             <option key={key} value={key}>
               {key}
@@ -95,10 +104,11 @@ export default function CenarioForm() {
           </VisualizeButton>
         )}
       </BotaoVisualizar>
-
-      {selectedConfig && (
+      {xmlContent && <XmlViewer>{xmlContent}</XmlViewer>}{" "}
+      {/* Exibe o XML gerado */}
+      {campos && (
         <FormContainer>
-          {Object.entries(selectedConfig).map(([setor, fields]) => (
+          {Object.entries(campos).map(([setor, fields]) => (
             <Sector key={setor}>
               <SectorTitle>
                 {setor === "informacoesBasicas"
@@ -106,14 +116,18 @@ export default function CenarioForm() {
                   : "Detalhes Financeiros"}
               </SectorTitle>
               <FieldsContainer>
-                {fields.map((field: FieldConfig) => (
-                  <CenarioFormField
-                    key={field.name}
-                    field={field}
-                    value={formData[field.name] || ""}
-                    onChange={handleInputChange}
-                  />
-                ))}
+                {fields
+                  .filter(
+                    (field): field is FormularioConfig => field !== undefined
+                  )
+                  .map((field: FormularioConfig) => (
+                    <CenarioFormField
+                      key={field.name}
+                      field={field}
+                      value={formData[field.name] || ""}
+                      onChange={handleInputChange}
+                    />
+                  ))}
               </FieldsContainer>
             </Sector>
           ))}
@@ -123,6 +137,15 @@ export default function CenarioForm() {
     </PageContainer>
   );
 }
+
+const XmlViewer = styled.pre`
+  background-color: #f3f4f6;
+  padding: 20px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: monospace;
+  margin-top: 20px;
+`;
 
 const BotaoVisualizar = styled.div`
   display: flex;
