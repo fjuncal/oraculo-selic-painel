@@ -10,7 +10,7 @@ interface FieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function ScenarioFormField({
+export default function CenarioFormField({
   field,
   value,
   onChange,

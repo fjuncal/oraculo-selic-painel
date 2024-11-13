@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FieldConfig, mensagemConfig } from "../../assets/mensagemConfig";
-import ScenarioFormField from "./CenarioFormField";
+import CenarioFormField from "./CenarioFormField";
 import styled from "styled-components";
 
 export default function CenarioForm() {
@@ -10,7 +10,7 @@ export default function CenarioForm() {
   const [tipoCenario, setTipoCenario] = useState<string>(
     "Corretagem intermediação"
   );
-  const [canal, setCanal] = useState<string>("Mensageria");
+  const [canal, setCanal] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,11 +22,27 @@ export default function CenarioForm() {
     setFormData({});
   };
 
+  const handleCanalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCanal(e.target.value);
+  };
+
+  const handleVisualizeClick = () => {
+    if (canal === "MENSAGERIA") {
+      console.log("Gerando XML...");
+      // Chame a função de geração de XML aqui
+    } else {
+      console.log("Exibindo String SELIC...");
+      // Adicione aqui a lógica para exibir a string SELIC
+    }
+  };
+
   const selectedConfig = mensagemConfig[codigoMensagem];
 
   return (
     <PageContainer>
-      <Title>Cadastrar Cenário</Title>
+      <Header>
+        <Title>Cadastrar Cenário</Title>
+      </Header>
 
       <FixedFieldsContainer>
         <InputWrapper>
@@ -51,8 +67,9 @@ export default function CenarioForm() {
 
         <InputWrapper>
           <Label>Canal:</Label>
-          <Select value={canal} onChange={(e) => setCanal(e.target.value)}>
-            <option value="Mensageria">Mensageria</option>
+          <Select value={canal} onChange={handleCanalChange}>
+            <option value="">Selecione o Canal</option>
+            <option value="MENSAGERIA">Mensageria</option>
             <option value="IOS">IOS</option>
           </Select>
         </InputWrapper>
@@ -69,6 +86,15 @@ export default function CenarioForm() {
           ))}
         </CustomSelect>
       </SelectWrapper>
+      <BotaoVisualizar>
+        {canal && (
+          <VisualizeButton onClick={handleVisualizeClick}>
+            {canal === "MENSAGERIA"
+              ? "Visualizar XML"
+              : "Visualizar String SELIC"}
+          </VisualizeButton>
+        )}
+      </BotaoVisualizar>
 
       {selectedConfig && (
         <FormContainer>
@@ -81,7 +107,7 @@ export default function CenarioForm() {
               </SectorTitle>
               <FieldsContainer>
                 {fields.map((field: FieldConfig) => (
-                  <ScenarioFormField
+                  <CenarioFormField
                     key={field.name}
                     field={field}
                     value={formData[field.name] || ""}
@@ -98,16 +124,45 @@ export default function CenarioForm() {
   );
 }
 
-const PageContainer = styled.div`
-  padding: 20px;
-  background-color: #f9fafb;
+const BotaoVisualizar = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const Title = styled.h2`
   color: #4f46e5;
   font-size: 2rem;
-  text-align: left;
-  margin-bottom: 20px;
+  margin: 0;
+`;
+
+const VisualizeButton = styled.button`
+  padding: 8px 16px;
+  background-color: #4f46e5;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: auto;
+
+  &:hover {
+    background-color: #3730a3;
+  }
+`;
+
+const PageContainer = styled.div`
+  padding: 20px;
+  background-color: #f9fafb;
 `;
 
 const FixedFieldsContainer = styled.div`
