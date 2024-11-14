@@ -55,7 +55,7 @@ export const formularios = {
       name: "ValorFinanceiro",
       tagXML: "VlrFinanc",
       type: "number",
-      length: 10,
+      length: 8,
     },
     // Outros campos de Detalhes Financeiros
   ],

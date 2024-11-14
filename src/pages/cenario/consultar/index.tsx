@@ -7,14 +7,24 @@ import CenarioTabela, {
 import styled from "styled-components";
 import ModalCenario from "@/components/Cenario/Consulta/ModalCenario";
 import { enviarCenarios } from "@/services/cenarioService";
+import { Alert, Snackbar } from "@mui/material";
 
 export default function Cenarios() {
   const { cenarios, carregando } = useBuscarCenarios();
   const [selectedCenarios, setSelectedCenarios] = useState<number[]>([]);
   const [selectedCenario, setSelectedCenario] = useState<Cenario | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   if (carregando) return <p>Carregando...</p>;
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleDetalheClick = (cenario: Cenario) => {
     setSelectedCenario(cenario);
@@ -50,10 +60,13 @@ export default function Cenarios() {
 
       // Limpa a seleção após o envio
       setSelectedCenarios([]);
-      alert("Cenários enviados com sucesso!");
+      setSnackbarMessage("Cenários enviados com sucesso!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
     } catch (error) {
-      console.error("Erro ao enviar cenários:", error);
-      alert("Ocorreu um erro ao enviar os cenários.");
+      setSnackbarMessage("Erro ao enviar cenários.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
     }
   };
 
@@ -75,6 +88,21 @@ export default function Cenarios() {
       {isModalOpen && (
         <ModalCenario cenario={selectedCenario} onClose={closeModal} />
       )}
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </PageContainer>
   );
 }

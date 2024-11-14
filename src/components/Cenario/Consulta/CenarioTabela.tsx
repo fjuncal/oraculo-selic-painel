@@ -7,7 +7,6 @@ import {
   Td,
   Th,
 } from "./styles/TabelaCenarioStyles";
-import ModalCenario from "./ModalCenario";
 
 export interface Cenario {
   id: number;

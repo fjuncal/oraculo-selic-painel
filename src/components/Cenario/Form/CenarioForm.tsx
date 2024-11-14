@@ -28,6 +28,7 @@ import {
   Title,
   VisualizeButton,
 } from "./styles";
+import { Alert, Snackbar } from "@mui/material";
 
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
@@ -39,6 +40,15 @@ export default function CenarioForm() {
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
@@ -99,18 +109,24 @@ export default function CenarioForm() {
 
       try {
         const result = await salvarCenario(cenarioData);
-        alert(`Cenário salvo com sucesso! ID: ${result.id}`);
+        setSnackbarMessage("Cenário cadastrado com sucesso!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
         setDescricao("");
-        setTipoCenario("Corretagem intermediação");
+        setTipoCenario("");
         setCanal("");
         setCodigoMensagem("");
         setFormData({});
         setErrors({});
       } catch (error) {
-        alert("Erro ao salvar cenário");
+        setSnackbarMessage("Erro ao cadastrar cenário.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
       }
     } else {
-      console.log("Campos obrigatórios não preenchidos");
+      setSnackbarMessage("Campos obrigatórios precisam ser preenchidos.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
     }
   };
 
@@ -231,6 +247,20 @@ export default function CenarioForm() {
           <SubmitButton onClick={handleFormSubmit}>Salvar Cenário</SubmitButton>
         </ButtonContainer>
       )}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </PageContainer>
   );
 }
