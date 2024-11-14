@@ -19,6 +19,8 @@ export async function salvarCenario(cenarioData: any) {
 }
 
 export const buscarCenarios = async () => {
-  const response = await axios.get("/api/cenarios");
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios/list`
+  );
   return response.data;
 };
