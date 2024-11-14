@@ -1,24 +1,24 @@
-export async function saveCenario(cenarioData: any) {
+import axios from "axios";
+
+export async function salvarCenario(cenarioData: any) {
   try {
-    const response = await fetch(
+    const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios`,
+      cenarioData,
       {
-        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cenarioData),
       }
     );
-
-    if (!response.ok) {
-      throw new Error("Erro ao salvar cenário");
-    }
-
-    const result = await response.json();
-    return result;
+    return response.data;
   } catch (error) {
     console.error("Erro ao salvar cenário:", error);
-    throw error;
+    throw new Error("Erro ao salvar cenário");
   }
 }
+
+export const buscarCenarios = async () => {
+  const response = await axios.get("/api/cenarios");
+  return response.data;
+};

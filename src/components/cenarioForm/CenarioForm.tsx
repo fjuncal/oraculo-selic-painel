@@ -1,6 +1,6 @@
 import { getCamposParaCodigoMensagem } from "@/assets/config-form/configHelper";
 import { FormularioConfig } from "@/assets/formulariosConfig";
-import { saveCenario } from "@/services/cenarioService";
+import { salvarCenario } from "@/services/cenarioService";
 import { generatePositionalString } from "@/utils/generatePositionalString";
 import { useState } from "react";
 import { mensagemConfig } from "../../assets/mensagemConfig";
@@ -99,7 +99,7 @@ export default function CenarioForm() {
       };
 
       try {
-        const result = await saveCenario(cenarioData);
+        const result = await salvarCenario(cenarioData);
         alert(`Cenário salvo com sucesso! ID: ${result.id}`);
         setDescricao("");
         setTipoCenario("Corretagem intermediação");
