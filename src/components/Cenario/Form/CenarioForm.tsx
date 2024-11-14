@@ -22,6 +22,7 @@ import {
   SectorTitle,
   Select,
   SelectWrapper,
+  StyledInput,
   SubmitButton,
   TextArea,
   Title,
@@ -32,9 +33,7 @@ export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
   const [descricao, setDescricao] = useState<string>("");
-  const [tipoCenario, setTipoCenario] = useState<string>(
-    "Corretagem intermediação"
-  );
+  const [tipoCenario, setTipoCenario] = useState<string>("");
   const [canal, setCanal] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -156,13 +155,12 @@ export default function CenarioForm() {
 
         <InputWrapper>
           <Label>Tipo de Cenário:</Label>
-          <Select
+          <StyledInput
+            type="text"
             value={tipoCenario}
             onChange={(e) => setTipoCenario(e.target.value)}
-          >
-            <option value="Simulação">Simulação</option>
-            <option value="Produção">Produção</option>
-          </Select>
+            placeholder="Digite o tipo de cenário"
+          />
         </InputWrapper>
 
         <InputWrapper>

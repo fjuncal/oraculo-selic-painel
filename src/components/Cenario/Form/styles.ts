@@ -250,3 +250,16 @@ export const ModalBody = styled.div`
   padding-top: 20px;
   font-family: monospace;
 `;
+export const StyledInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #4f46e5;
+    outline: none;
+  }
+`;
