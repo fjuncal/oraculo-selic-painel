@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ActionButton,
   StyledRow,
@@ -6,13 +7,19 @@ import {
   Td,
   Th,
 } from "./styles/TabelaCenarioStyles";
+import ModalCenario from "./ModalCenario";
 
-interface Cenario {
+export interface Cenario {
   id: number;
   descricao: string;
   tipoCenario: string;
   dataInclusao: string;
   codigoMsg: string;
+  canal: string;
+  contaCedente: string;
+  contaCessionaria: string;
+  emissor: string;
+  valorFinanceiro: string;
 }
 
 interface CenarioTableProps {
@@ -24,6 +31,9 @@ export default function CenarioTabela({
   cenarios,
   onDetalheClick,
 }: CenarioTableProps) {
+  const [selectedCenario, setSelectedCenario] = useState<Cenario | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
@@ -39,6 +49,18 @@ export default function CenarioTabela({
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
+
+  const handleDetalheClick = (cenario: Cenario) => {
+    setSelectedCenario(cenario);
+    setIsModalOpen(true);
+  };
+
+  // Função para fechar o modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCenario(null);
+  };
+
   return (
     <TableContainer>
       <StyledTable>
@@ -61,7 +83,7 @@ export default function CenarioTabela({
               <Td>{cenario.tipoCenario}</Td>
               <Td>{formatDateTime(cenario.dataInclusao)}</Td>
               <Td>
-                <ActionButton onClick={() => onDetalheClick(cenario.id)}>
+                <ActionButton onClick={() => handleDetalheClick(cenario)}>
                   Ver Detalhes
                 </ActionButton>
               </Td>
@@ -69,6 +91,9 @@ export default function CenarioTabela({
           ))}
         </tbody>
       </StyledTable>
+      {isModalOpen && (
+        <ModalCenario cenario={selectedCenario} onClose={closeModal} />
+      )}
     </TableContainer>
   );
 }
