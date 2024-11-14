@@ -3,10 +3,10 @@ import { FormularioConfig } from "@/assets/formulariosConfig";
 import { salvarCenario } from "@/services/cenarioService";
 import { generatePositionalString } from "@/utils/generatePositionalString";
 import { useState } from "react";
-import { mensagemConfig } from "../../assets/mensagemConfig";
-import { generateXML } from "../../utils/generateXML";
-import CenarioFormField from "./CenarioFormField";
-import Modal from "./Modal";
+import { mensagemConfig } from "../../../assets/mensagemConfig";
+import { generateXML } from "../../../utils/generateXML";
+import CenarioFormField from "../Form/CenarioFormField";
+import Modal from "../Form/Modal";
 import {
   BotaoVisualizar,
   ButtonContainer,

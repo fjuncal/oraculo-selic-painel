@@ -1,4 +1,4 @@
-import CenarioForm from "@/components/cenarioForm/CenarioForm";
+import CenarioForm from "@/components/CenarioForm/Form/CenarioForm";
 
 export default function Cenario() {
   return (

@@ -1,6 +1,6 @@
-import MessageDetailsModal from "@/components/MessageDetailsModal";
-import MessageFilters from "@/components/MessageFilters";
-import MessageTable from "@/components/MessageTable";
+import MessageDetailsModal from "@/components/Mensagem/Consulta/MessageDetailsModal";
+import MessageFilters from "@/components/Mensagem/Consulta/MessageFilters";
+import MessageTable from "@/components/Mensagem/Consulta/MessageTable";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
