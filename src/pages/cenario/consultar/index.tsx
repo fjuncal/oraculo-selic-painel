@@ -1,25 +1,24 @@
 // src/pages/cenarios/index.tsx
 import React from "react";
 import { useBuscarCenarios } from "@/components/Cenario/Consulta/hooks/useBuscarCenarios";
+import CenarioTabela from "@/components/Cenario/Consulta/CenarioTabela";
 import styled from "styled-components";
-import GenericTable from "@/components/TabelaPadronizada";
 
 export default function Cenarios() {
   const { cenarios, carregando } = useBuscarCenarios();
 
   if (carregando) return <p>Carregando...</p>;
 
-  const columns = [
-    { header: "ID", accessor: "id" },
-    { header: "Descrição", accessor: "descricao" },
-    { header: "Tipo", accessor: "tipo" },
-    { header: "Data", accessor: "data" },
-  ];
+  // Função para ação de clique no botão "Ver Detalhes"
+  const handleDetalheClick = (id: number) => {
+    console.log("Detalhes do cenário com ID:", id);
+    // Implementar a lógica para exibir detalhes do cenário
+  };
 
   return (
     <PageContainer>
       <Title>Consulta de Cenários</Title>
-      <GenericTable data={cenarios} columns={columns} />
+      <CenarioTabela cenarios={cenarios} onDetalheClick={handleDetalheClick} />
     </PageContainer>
   );
 }
