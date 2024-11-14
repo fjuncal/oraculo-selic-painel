@@ -74,6 +74,9 @@ export const TextArea = styled.textarea`
     border-color: #4f46e5;
     outline: none;
   }
+  &.erro {
+    border-color: red;
+  }
 `;
 
 export const Select = styled.select`
@@ -85,6 +88,9 @@ export const Select = styled.select`
   &:focus {
     border-color: #4f46e5;
     outline: none;
+  }
+  &.erro {
+    border-color: red;
   }
 `;
 
@@ -270,4 +276,13 @@ export const StyledInput = styled.input`
     border-color: #4f46e5;
     outline: none;
   }
+  &.erro {
+    border-color: red;
+  }
+`;
+
+export const MensagemErroCampoObrigatorio = styled.span`
+  margin: 4px;
+  font-size: 0.8rem;
+  color: red;
 `;

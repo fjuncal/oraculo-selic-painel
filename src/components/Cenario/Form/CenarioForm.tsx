@@ -17,6 +17,7 @@ import {
   Header,
   InputWrapper,
   Label,
+  MensagemErroCampoObrigatorio,
   PageContainer,
   Sector,
   SectorTitle,
@@ -68,11 +69,17 @@ export default function CenarioForm() {
   };
 
   const validateFields = () => {
+    const newErrors: { [key: string]: boolean } = {};
+    // Verifica se os campos obrigatórios estão preenchidos
+    if (!descricao) newErrors.descricao = true;
+    if (!tipoCenario) newErrors.tipoCenario = true;
+    if (!canal) newErrors.canal = true;
+
     const campos = getCamposParaCodigoMensagem(
       codigoMensagem as keyof typeof mensagemConfig
     );
-    const newErrors: { [key: string]: boolean } = {};
 
+    // Valida os campos específicos com base na configuração
     Object.entries(campos || {}).forEach(([sector, fields]) => {
       if (Array.isArray(fields)) {
         (fields as FormularioConfig[]).forEach((field) => {
@@ -82,7 +89,6 @@ export default function CenarioForm() {
         });
       }
     });
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -166,7 +172,14 @@ export default function CenarioForm() {
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
             placeholder="Digite uma descrição para o cenário"
+            required
+            className={errors.descricao ? "erro" : ""}
           />
+          {errors.descricao && (
+            <MensagemErroCampoObrigatorio>
+              Campo obrigatório
+            </MensagemErroCampoObrigatorio>
+          )}
         </InputWrapper>
 
         <InputWrapper>
@@ -176,16 +189,33 @@ export default function CenarioForm() {
             value={tipoCenario}
             onChange={(e) => setTipoCenario(e.target.value)}
             placeholder="Digite o tipo de cenário"
+            required
+            className={errors.descricao ? "erro" : ""}
           />
+          {errors.tipoCenario && (
+            <MensagemErroCampoObrigatorio>
+              Campo obrigatório
+            </MensagemErroCampoObrigatorio>
+          )}
         </InputWrapper>
 
         <InputWrapper>
           <Label>Canal:</Label>
-          <Select value={canal} onChange={handleCanalChange}>
+          <Select
+            value={canal}
+            onChange={handleCanalChange}
+            required
+            className={errors.descricao ? "erro" : ""}
+          >
             <option value="">Selecione o Canal</option>
             <option value="MENSAGERIA">Mensageria</option>
             <option value="IOS">IOS</option>
           </Select>
+          {errors.canal && (
+            <MensagemErroCampoObrigatorio>
+              Campo obrigatório
+            </MensagemErroCampoObrigatorio>
+          )}
         </InputWrapper>
       </FixedFieldsContainer>
       <SelectWrapper>
