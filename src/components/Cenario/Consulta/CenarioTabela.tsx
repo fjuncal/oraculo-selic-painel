@@ -26,13 +26,9 @@ export interface Cenario {
 
 interface CenarioTableProps {
   cenarios: Cenario[];
-  onDetalheClick: (id: number) => void;
 }
 
-export default function CenarioTabela({
-  cenarios,
-  onDetalheClick,
-}: CenarioTableProps) {
+export default function CenarioTabela({ cenarios }: CenarioTableProps) {
   const [selectedCenario, setSelectedCenario] = useState<Cenario | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

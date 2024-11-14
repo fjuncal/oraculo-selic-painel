@@ -34,7 +34,6 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
     { label: "Conta Cessionário", value: cenario.contaCessionaria },
     { label: "Emissor", value: cenario.emissor },
     { label: "Valor Financeiro", value: cenario.valorFinanceiro },
-    { label: "Data de Inclusão", value: cenario.dataInclusao },
   ];
   const handleOpenSecondaryModal = (content: string) => {
     setSecondaryModalContent(content);
