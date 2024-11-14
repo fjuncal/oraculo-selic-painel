@@ -5,8 +5,8 @@ import { generatePositionalString } from "@/utils/generatePositionalString";
 import { useState } from "react";
 import { mensagemConfig } from "../../../assets/mensagemConfig";
 import { generateXML } from "../../../utils/generateXML";
-import CenarioFormField from "../Form/CenarioFormField";
-import Modal from "../Form/Modal";
+import CenarioFormField from "./CenarioFormField";
+import Modal from "./Modal";
 import {
   BotaoVisualizar,
   ButtonContainer,
