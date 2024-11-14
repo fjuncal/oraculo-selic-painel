@@ -6,6 +6,7 @@ import CenarioTabela, {
 } from "@/components/Cenario/Consulta/CenarioTabela";
 import styled from "styled-components";
 import ModalCenario from "@/components/Cenario/Consulta/ModalCenario";
+import { enviarCenarios } from "@/services/cenarioService";
 
 export default function Cenarios() {
   const { cenarios, carregando } = useBuscarCenarios();
@@ -36,11 +37,24 @@ export default function Cenarios() {
   };
 
   // Função para enviar cenários selecionados
-  const handleEnviarCenarios = () => {
-    console.log("Enviando cenários com IDs:", selectedCenarios);
-    // Adicionar a lógica de envio para o backend aqui
-    // Após enviar, opcionalmente, limpar a seleção
-    setSelectedCenarios([]);
+  const handleEnviarCenarios = async () => {
+    try {
+      // Filtra os cenários selecionados
+      const cenariosSelecionados = cenarios.filter((c: Cenario) =>
+        selectedCenarios.includes(c.id)
+      );
+      console.log(cenariosSelecionados);
+
+      // Envia a lista de cenários selecionados para o backend
+      await enviarCenarios(cenariosSelecionados);
+
+      // Limpa a seleção após o envio
+      setSelectedCenarios([]);
+      alert("Cenários enviados com sucesso!");
+    } catch (error) {
+      console.error("Erro ao enviar cenários:", error);
+      alert("Ocorreu um erro ao enviar os cenários.");
+    }
   };
 
   return (
