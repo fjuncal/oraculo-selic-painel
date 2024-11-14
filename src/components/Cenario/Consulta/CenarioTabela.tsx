@@ -10,8 +10,9 @@ import {
 interface Cenario {
   id: number;
   descricao: string;
-  tipo: string;
+  tipoCenario: string;
   dataInclusao: string;
+  codigoMsg: string;
 }
 
 interface CenarioTableProps {
@@ -44,6 +45,7 @@ export default function CenarioTabela({
         <thead>
           <tr>
             <Th>ID</Th>
+            <Th>Mensagem</Th>
             <Th>Descrição</Th>
             <Th>Tipo</Th>
             <Th>Data de Inclusão</Th>
@@ -54,8 +56,9 @@ export default function CenarioTabela({
           {cenarios.map((cenario) => (
             <StyledRow key={cenario.id}>
               <Td>{cenario.id}</Td>
+              <Td>{cenario.codigoMsg}</Td>
               <Td>{cenario.descricao}</Td>
-              <Td>{cenario.tipo}</Td>
+              <Td>{cenario.tipoCenario}</Td>
               <Td>{formatDateTime(cenario.dataInclusao)}</Td>
               <Td>
                 <ActionButton onClick={() => onDetalheClick(cenario.id)}>
