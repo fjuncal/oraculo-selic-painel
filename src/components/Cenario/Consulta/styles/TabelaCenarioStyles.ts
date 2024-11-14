@@ -82,3 +82,28 @@ export const CloseButton = styled.button`
   cursor: pointer;
   color: #333;
 `;
+
+export const Button = styled.button`
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #4f46e5;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: #3730a3;
+  }
+`;
+
+export const ContentWrapper = styled.div`
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+`;

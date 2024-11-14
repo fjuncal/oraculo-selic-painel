@@ -20,6 +20,8 @@ export interface Cenario {
   contaCessionaria: string;
   emissor: string;
   valorFinanceiro: string;
+  xml: string;
+  stringSelic: string;
 }
 
 interface CenarioTableProps {
