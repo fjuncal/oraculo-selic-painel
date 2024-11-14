@@ -11,7 +11,6 @@ export const useBuscarCenarios = () => {
       try {
         const data = await buscarCenarios();
         setCenarios(data);
-        console.log(data);
       } catch (error) {
         console.error("Erro ao buscar cenários:", error);
       } finally {

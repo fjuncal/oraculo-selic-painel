@@ -25,6 +25,10 @@ export default function CenarioTabela({
 }: CenarioTableProps) {
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Data inválida";
+    }
+
     const day = String(date.getUTCDate()).padStart(2, "0");
     const month = String(date.getUTCMonth() + 1).padStart(2, "0");
     const year = date.getUTCFullYear();
@@ -34,7 +38,6 @@ export default function CenarioTabela({
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
-
   return (
     <TableContainer>
       <StyledTable>
