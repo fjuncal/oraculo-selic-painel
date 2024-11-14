@@ -5,7 +5,18 @@ function getFieldDetails(
   fieldName: string,
   sector: keyof typeof formularios
 ): FormularioConfig | undefined {
-  return formularios[sector].find((field) => field.name === fieldName);
+  const field = formularios[sector].find((field) => field.name === fieldName);
+
+  // Garante que 'required' seja sempre retornado, mesmo que o campo não o tenha explicitamente
+  if (field) {
+    return {
+      ...field,
+      required:
+        "required" in field ? (field as FormularioConfig).required : false,
+    };
+  }
+
+  return undefined;
 }
 
 export function generateXML(
@@ -29,15 +40,15 @@ export function generateXML(
   // Itera pelos setores do config e adiciona as tags preenchidas ao XML
   Object.entries(config).forEach(([sector, fields]) => {
     fields.forEach((fieldName) => {
-      // Obtém detalhes do campo completo a partir do nome e do setor
       const fieldDetails = getFieldDetails(
-        fieldName,
+        fieldName.replace("#", ""), // Remove o '#' do nome do campo
         sector as keyof typeof formularios
       );
 
       if (fieldDetails) {
         const value = formData[fieldDetails.name];
-        if (value) {
+        if (value !== undefined && value !== null) {
+          // Assegura que o campo não está vazio
           xml += `      <${fieldDetails.tagXML}>${value}</${fieldDetails.tagXML}>\n`;
         }
       }

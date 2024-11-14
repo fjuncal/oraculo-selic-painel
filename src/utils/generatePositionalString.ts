@@ -13,22 +13,30 @@ export function generatePositionalString(
 
   let posString = "";
 
-  // Itera pelos setores do config e constrói a string posicional
+  // Itera pelos setores e campos no config para construir a string posicional
   Object.entries(config).forEach(([sector, fields]) => {
+    console.log(`Setor: ${sector}, Campos: ${JSON.stringify(fields)}`);
+
     fields.forEach((fieldName) => {
-      // Encontra o campo com base no nome no config e aplica o `length`
+      // Remove o # do nome do campo, se existir
+      const normalizedFieldName = fieldName.startsWith("#")
+        ? fieldName.slice(1)
+        : fieldName;
+
+      // Localiza a configuração do campo com base no nome normalizado
       const fieldConfig = formularios[sector as keyof typeof formularios].find(
-        (field) => field.name === fieldName
+        (field) => field.name === normalizedFieldName
       );
 
       if (fieldConfig) {
-        const value = formData[fieldConfig.name] || ""; // Pega o valor preenchido ou vazio
+        const value = formData[fieldConfig.name] ?? "";
         let formattedValue = "";
 
-        // Verifica o tipo do campo e aplica preenchimento
         if (fieldConfig.type === "number") {
-          // Preenche com zeros à esquerda para campos numéricos
-          formattedValue = value.toString().padStart(fieldConfig.length, "0");
+          // Preenche com zeros à esquerda para campos numéricos, caso vazio usa "0"
+          formattedValue = value
+            ? value.toString().padStart(fieldConfig.length, "0")
+            : "0".repeat(fieldConfig.length);
         } else {
           // Preenche com espaços à direita para campos de texto
           formattedValue = value.toString().padEnd(fieldConfig.length, " ");
@@ -36,9 +44,14 @@ export function generatePositionalString(
 
         // Adiciona o valor formatado à string final
         posString += formattedValue.slice(0, fieldConfig.length); // Garante que o comprimento seja exato
+      } else {
+        console.warn(
+          `Configuração não encontrada para o campo: ${normalizedFieldName}`
+        );
       }
     });
   });
 
+  console.log("String Posicional Final:", posString);
   return posString;
 }

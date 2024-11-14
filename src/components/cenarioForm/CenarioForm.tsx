@@ -99,7 +99,7 @@ export default function CenarioForm() {
   const handleVisualizeClick = () => {
     let title = "";
     let content = "";
-
+    console.log("Dados do formData:", formData);
     if (canal === "MENSAGERIA") {
       title = "Visualizar XML";
       content = generateXML(formData, codigoMensagem);
