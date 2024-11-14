@@ -26,12 +26,17 @@ export interface Cenario {
 
 interface CenarioTableProps {
   cenarios: Cenario[];
+  onDetalheClick: (cenario: Cenario) => void;
+  onSelectCenario: (cenarioId: number) => void;
+  selectedCenarios: number[];
 }
 
-export default function CenarioTabela({ cenarios }: CenarioTableProps) {
-  const [selectedCenario, setSelectedCenario] = useState<Cenario | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+export default function CenarioTabela({
+  cenarios,
+  onDetalheClick,
+  onSelectCenario,
+  selectedCenarios,
+}: CenarioTableProps) {
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
@@ -48,22 +53,12 @@ export default function CenarioTabela({ cenarios }: CenarioTableProps) {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
-  const handleDetalheClick = (cenario: Cenario) => {
-    setSelectedCenario(cenario);
-    setIsModalOpen(true);
-  };
-
-  // Função para fechar o modal
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedCenario(null);
-  };
-
   return (
     <TableContainer>
       <StyledTable>
         <thead>
           <tr>
+            <Th>Selecionar</Th>
             <Th>ID</Th>
             <Th>Mensagem</Th>
             <Th>Descrição</Th>
@@ -75,13 +70,20 @@ export default function CenarioTabela({ cenarios }: CenarioTableProps) {
         <tbody>
           {cenarios.map((cenario) => (
             <StyledRow key={cenario.id}>
+              <Td>
+                <input
+                  type="checkbox"
+                  checked={selectedCenarios.includes(cenario.id)}
+                  onChange={() => onSelectCenario(cenario.id)}
+                />
+              </Td>
               <Td>{cenario.id}</Td>
               <Td>{cenario.codigoMsg}</Td>
               <Td>{cenario.descricao}</Td>
               <Td>{cenario.tipoCenario}</Td>
               <Td>{formatDateTime(cenario.dataInclusao)}</Td>
               <Td>
-                <ActionButton onClick={() => handleDetalheClick(cenario)}>
+                <ActionButton onClick={() => onDetalheClick(cenario)}>
                   Ver Detalhes
                 </ActionButton>
               </Td>
@@ -89,9 +91,6 @@ export default function CenarioTabela({ cenarios }: CenarioTableProps) {
           ))}
         </tbody>
       </StyledTable>
-      {isModalOpen && (
-        <ModalCenario cenario={selectedCenario} onClose={closeModal} />
-      )}
     </TableContainer>
   );
 }

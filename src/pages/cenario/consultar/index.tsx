@@ -1,24 +1,66 @@
 // src/pages/cenarios/index.tsx
-import React from "react";
+import React, { useState } from "react";
 import { useBuscarCenarios } from "@/components/Cenario/Consulta/hooks/useBuscarCenarios";
-import CenarioTabela from "@/components/Cenario/Consulta/CenarioTabela";
+import CenarioTabela, {
+  Cenario,
+} from "@/components/Cenario/Consulta/CenarioTabela";
 import styled from "styled-components";
+import ModalCenario from "@/components/Cenario/Consulta/ModalCenario";
 
 export default function Cenarios() {
   const { cenarios, carregando } = useBuscarCenarios();
+  const [selectedCenarios, setSelectedCenarios] = useState<number[]>([]);
+  const [selectedCenario, setSelectedCenario] = useState<Cenario | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (carregando) return <p>Carregando...</p>;
 
-  // Função para ação de clique no botão "Ver Detalhes"
-  const handleDetalheClick = (id: number) => {
-    console.log("Detalhes do cenário com ID:", id);
-    // Implementar a lógica para exibir detalhes do cenário
+  const handleDetalheClick = (cenario: Cenario) => {
+    setSelectedCenario(cenario);
+    setIsModalOpen(true);
+  };
+
+  // Função para fechar o modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCenario(null);
+  };
+
+  // Função para selecionar/desmarcar cenários
+  const toggleSelectCenario = (cenarioId: number) => {
+    setSelectedCenarios((prevSelected) =>
+      prevSelected.includes(cenarioId)
+        ? prevSelected.filter((id) => id !== cenarioId)
+        : [...prevSelected, cenarioId]
+    );
+  };
+
+  // Função para enviar cenários selecionados
+  const handleEnviarCenarios = () => {
+    console.log("Enviando cenários com IDs:", selectedCenarios);
+    // Adicionar a lógica de envio para o backend aqui
+    // Após enviar, opcionalmente, limpar a seleção
+    setSelectedCenarios([]);
   };
 
   return (
     <PageContainer>
       <Title>Consulta de Cenários</Title>
-      <CenarioTabela cenarios={cenarios} onDetalheClick={handleDetalheClick} />
+      <Button
+        onClick={handleEnviarCenarios}
+        disabled={selectedCenarios.length === 0}
+      >
+        Enviar Cenários Selecionados
+      </Button>
+      <CenarioTabela
+        cenarios={cenarios}
+        onDetalheClick={handleDetalheClick}
+        onSelectCenario={toggleSelectCenario}
+        selectedCenarios={selectedCenarios}
+      />
+      {isModalOpen && (
+        <ModalCenario cenario={selectedCenario} onClose={closeModal} />
+      )}
     </PageContainer>
   );
 }
@@ -35,4 +77,24 @@ const PageContainer = styled.div`
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #4f46e5;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  &:hover:enabled {
+    background-color: #3730a3;
+  }
 `;
