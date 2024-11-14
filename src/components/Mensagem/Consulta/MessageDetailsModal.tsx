@@ -1,5 +1,5 @@
+import { MessageStatus } from "@/pages/mensagens";
 import styled from "styled-components";
-import { MessageStatus } from "../pages/mensagens/index";
 
 interface MessageDetailsModalProps {
   isOpen: boolean;
