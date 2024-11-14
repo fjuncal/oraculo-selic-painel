@@ -1,13 +1,32 @@
-import { useState } from "react";
-import { mensagemConfig } from "../../assets/mensagemConfig";
-import CenarioFormField from "./CenarioFormField";
-import styled from "styled-components";
-import { generateXML } from "../../utils/generateXML";
 import { getCamposParaCodigoMensagem } from "@/assets/config-form/configHelper";
 import { FormularioConfig } from "@/assets/formulariosConfig";
-import { generatePositionalString } from "@/utils/generatePositionalString";
-import Modal from "./Modal";
 import { saveCenario } from "@/services/cenarioService";
+import { generatePositionalString } from "@/utils/generatePositionalString";
+import { useState } from "react";
+import { mensagemConfig } from "../../assets/mensagemConfig";
+import { generateXML } from "../../utils/generateXML";
+import CenarioFormField from "./CenarioFormField";
+import Modal from "./Modal";
+import {
+  BotaoVisualizar,
+  ButtonContainer,
+  CustomSelect,
+  FieldsContainer,
+  FixedFieldsContainer,
+  FormContainer,
+  Header,
+  InputWrapper,
+  Label,
+  PageContainer,
+  Sector,
+  SectorTitle,
+  Select,
+  SelectWrapper,
+  SubmitButton,
+  TextArea,
+  Title,
+  VisualizeButton,
+} from "./styles";
 
 export default function CenarioForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
@@ -217,173 +236,3 @@ export default function CenarioForm() {
     </PageContainer>
   );
 }
-
-const BotaoVisualizar = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 8px;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-`;
-
-const Title = styled.h2`
-  color: #4f46e5;
-  font-size: 2rem;
-  margin: 0;
-`;
-
-const VisualizeButton = styled.button`
-  padding: 8px 16px;
-  background-color: #4f46e5;
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-left: auto;
-
-  &:hover {
-    background-color: #3730a3;
-  }
-`;
-
-const PageContainer = styled.div`
-  padding: 20px;
-  background-color: #f9fafb;
-`;
-
-const FixedFieldsContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  margin-bottom: 15px;
-`;
-
-const Label = styled.label`
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8px;
-`;
-
-const TextArea = styled.textarea`
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: #ffffff;
-  resize: vertical;
-  min-height: 40px; /* Controla a altura mínima */
-  max-height: 120px; /* Controla a altura máxima */
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: #ffffff;
-`;
-
-const SelectWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 40px;
-`;
-
-const CustomSelect = styled.select`
-  padding: 10px 15px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #4f46e5;
-  border: 2px solid #4f46e5;
-  border-radius: 8px;
-  background-color: #ffffff;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-  appearance: none;
-
-  &:hover {
-    border-color: #3730a3;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
-  }
-`;
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-`;
-
-const Sector = styled.div`
-  flex: 1 1 48%; /* Ocupa 48% da largura para permitir dois setores lado a lado */
-  max-width: 48%; /* Limita a largura máxima do setor a 48% */
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-  margin-bottom: 20px;
-
-  /* Alinha o setor no centro se houver apenas um setor na linha */
-  &:only-child {
-    margin-left: auto;
-    margin-right: auto;
-  }
-`;
-const SectorTitle = styled.h3`
-  color: #4f46e5;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-`;
-
-const FieldsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px; /* Espaçamento entre os campos */
-
-  /* Define que cada campo ocupe 100% da largura em telas pequenas */
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end; /* Alinha o conteúdo (botão) à direita */
-  margin-top: 16px;
-`;
-
-const SubmitButton = styled.button`
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background-color: #4f46e5;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #3730a3;
-  }
-`;
