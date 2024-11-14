@@ -107,3 +107,28 @@ export const ContentWrapper = styled.div`
   border-radius: 4px;
   border: 1px solid #ddd;
 `;
+
+export const DetailTable = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+`;
+
+export const DetailRow = styled.div`
+  display: contents;
+`;
+
+export const DetailLabel = styled.span`
+  font-weight: bold;
+  color: #333;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+`;
+
+export const DetailValue = styled.span`
+  padding: 5px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  color: #666;
+`;

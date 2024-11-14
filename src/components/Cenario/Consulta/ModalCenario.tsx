@@ -6,6 +6,10 @@ import {
   CloseButton,
   Button,
   ContentWrapper,
+  DetailLabel,
+  DetailRow,
+  DetailTable,
+  DetailValue,
 } from "./styles/TabelaCenarioStyles";
 
 interface ModalProps {
@@ -45,36 +49,44 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
         <ModalContent>
           <CloseButton onClick={onClose}>×</CloseButton>
           <h2>Detalhes do Cenário</h2>
-          {fields.map(
-            (field, index) =>
-              field.value && (
-                <p key={index}>
-                  <strong>{field.label}:</strong> {field.value}
-                </p>
-              )
-          )}
-          {cenario.xml && (
-            <p>
-              <strong>XML: </strong>
-              <Button onClick={() => handleOpenSecondaryModal(cenario.xml)}>
-                Visualizar XML
-              </Button>
-            </p>
-          )}
-          {cenario.stringSelic && (
-            <p>
-              <strong>String Selic: </strong>
-              <Button
-                onClick={() => handleOpenSecondaryModal(cenario.stringSelic)}
-              >
-                Visualizar String Selic
-              </Button>
-            </p>
-          )}
+          <DetailTable>
+            {fields.map(
+              (field, index) =>
+                field.value && (
+                  <DetailRow key={index}>
+                    <DetailLabel>{field.label}:</DetailLabel>
+                    <DetailValue>{field.value}</DetailValue>
+                  </DetailRow>
+                )
+            )}
+            {cenario.xml && (
+              <DetailRow>
+                <DetailLabel>XML:</DetailLabel>
+                <DetailValue>
+                  <Button onClick={() => handleOpenSecondaryModal(cenario.xml)}>
+                    Visualizar XML
+                  </Button>
+                </DetailValue>
+              </DetailRow>
+            )}
+            {cenario.stringSelic && (
+              <DetailRow>
+                <DetailLabel>String Selic:</DetailLabel>
+                <DetailValue>
+                  <Button
+                    onClick={() =>
+                      handleOpenSecondaryModal(cenario.stringSelic)
+                    }
+                  >
+                    Visualizar String Selic
+                  </Button>
+                </DetailValue>
+              </DetailRow>
+            )}
+          </DetailTable>
         </ModalContent>
       </Overlay>
 
-      {/* Modal Secundário */}
       {secondaryModalContent && (
         <Overlay>
           <ModalContent>
