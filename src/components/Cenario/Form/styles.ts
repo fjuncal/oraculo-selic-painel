@@ -70,6 +70,10 @@ export const TextArea = styled.textarea`
   resize: vertical;
   min-height: 40px; /* Controla a altura mínima */
   max-height: 120px; /* Controla a altura máxima */
+  &:focus {
+    border-color: #4f46e5;
+    outline: none;
+  }
 `;
 
 export const Select = styled.select`
@@ -78,6 +82,10 @@ export const Select = styled.select`
   border-radius: 8px;
   font-size: 1rem;
   background-color: #ffffff;
+  &:focus {
+    border-color: #4f46e5;
+    outline: none;
+  }
 `;
 
 export const SelectWrapper = styled.div`
