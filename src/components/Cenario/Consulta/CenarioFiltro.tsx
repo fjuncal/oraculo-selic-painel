@@ -1,49 +1,57 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
-interface MessageFiltersProps {
-  searchContent: string;
-  setSearchContent(value: string): void;
-  statusFilter: string;
-  setStatusFilter(value: string): void;
+interface CenarioFiltroProps {
+  codigoMensagem: string;
+  setCodigoMensagem(value: string): void;
+  descricao: string;
+  setDescricao(value: string): void;
+  tipoCenario: string;
+  setTipoCenario(value: string): void;
   startDate: string;
   setStartDate(value: string): void;
   endDate: string;
   setEndDate(value: string): void;
 }
 
-export default function MessageFilters({
-  searchContent,
-  setSearchContent,
-  statusFilter,
-  setStatusFilter,
+export default function CenarioFiltro({
+  codigoMensagem,
+  setCodigoMensagem,
+  descricao,
+  setDescricao,
+  tipoCenario,
+  setTipoCenario,
   startDate,
   setStartDate,
   endDate,
   setEndDate,
-}: MessageFiltersProps) {
+}: CenarioFiltroProps) {
   return (
     <FiltersContainer>
       <Input
         type="text"
-        placeholder="Buscar por código"
-        value={searchContent}
+        placeholder="Código da mensagem"
+        value={codigoMensagem}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setSearchContent(e.target.value)
+          setCodigoMensagem(e.target.value)
         }
       />
-      <Select
-        value={statusFilter}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          setStatusFilter(e.target.value)
+      <Input
+        type="text"
+        placeholder="Buscar por descrição"
+        value={descricao}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setDescricao(e.target.value)
         }
-      >
-        <option value="">Todos os Status</option>
-        <option value="ENVIANDO">ENVIANDO</option>
-        <option value="EM_PROCESSAMENTO">Em Processamento</option>
-        <option value="PROCESSADO">Processado</option>
-        <option value="NÃO PROCESSADO">Falha</option>
-      </Select>
+      />
+      <Input
+        type="text"
+        placeholder="Buscar por tipo de cenário"
+        value={tipoCenario}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setTipoCenario(e.target.value)
+        }
+      />
       <Input
         type="date"
         value={startDate}
@@ -82,17 +90,5 @@ const Input = styled.input`
   &:focus {
     border-color: #4f46e5;
     outline: none;
-  }
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  background-color: #fff;
-  transition: border-color 0.2s ease;
-  &:focus {
-    border-color: #4f46e5;
   }
 `;

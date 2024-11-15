@@ -8,6 +8,7 @@ import styled from "styled-components";
 import ModalCenario from "@/components/Cenario/Consulta/ModalCenario";
 import { enviarCenarios } from "@/services/cenarioService";
 import { Alert, Snackbar } from "@mui/material";
+import CenarioFiltro from "@/components/Cenario/Consulta/CenarioFiltro";
 
 export default function Cenarios() {
   const { cenarios, carregando } = useBuscarCenarios();
@@ -19,6 +20,30 @@ export default function Cenarios() {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const [codigoMensagem, setCodigoMensagem] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [tipoCenario, setTipoCenario] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const cenariosFiltrados = cenarios.filter((cenario: Cenario) => {
+    const dataInclusao = new Date(cenario.dataInclusao);
+
+    return (
+      (!codigoMensagem ||
+        cenario.codigoMsg
+          ?.toLowerCase()
+          .includes(codigoMensagem.toLowerCase())) &&
+      (!descricao ||
+        cenario.descricao?.toLowerCase().includes(descricao.toLowerCase())) &&
+      (!tipoCenario ||
+        cenario.tipoCenario
+          ?.toLowerCase()
+          .includes(tipoCenario.toLowerCase())) &&
+      (!startDate || dataInclusao >= new Date(startDate)) &&
+      (!endDate || dataInclusao <= new Date(endDate))
+    );
+  });
 
   if (carregando) return <p>Carregando...</p>;
 
@@ -73,6 +98,18 @@ export default function Cenarios() {
   return (
     <PageContainer>
       <Title>Consulta de Cenários</Title>
+      <CenarioFiltro
+        codigoMensagem={codigoMensagem}
+        setCodigoMensagem={setCodigoMensagem}
+        descricao={descricao}
+        setDescricao={setDescricao}
+        tipoCenario={tipoCenario}
+        setTipoCenario={setTipoCenario}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+      />
       <Button
         onClick={handleEnviarCenarios}
         disabled={selectedCenarios.length === 0}
@@ -80,7 +117,7 @@ export default function Cenarios() {
         Enviar Cenários Selecionados
       </Button>
       <CenarioTabela
-        cenarios={cenarios}
+        cenarios={cenariosFiltrados}
         onDetalheClick={handleDetalheClick}
         onSelectCenario={toggleSelectCenario}
         selectedCenarios={selectedCenarios}
