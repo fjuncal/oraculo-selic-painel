@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { Cenario } from "./CenarioTabela";
 import {
   Overlay,
   ModalContent,
-  CloseButton,
   Button,
   ContentWrapper,
   DetailLabel,
@@ -12,31 +10,35 @@ import {
   DetailValue,
   BackIcon,
   CloseIcon,
-} from "./styles/TabelaCenarioStyles";
+} from "./styles/PassoTesteStyles";
 import { FiArrowLeft, FiEye, FiX } from "react-icons/fi";
+import { PassoTeste } from "./PassoTesteTabela";
 
-interface ModalProps {
-  cenario: Cenario | null;
+interface PassoTesteModalProps {
+  passoTeste: PassoTeste | null;
   onClose: () => void;
 }
 
-export default function ModalCenario({ cenario, onClose }: ModalProps) {
+export default function ModalCenario({
+  passoTeste,
+  onClose,
+}: PassoTesteModalProps) {
   const [secondaryModalContent, setSecondaryModalContent] = useState<
     string | null
   >(null);
 
-  if (!cenario) return null;
+  if (!passoTeste) return null;
 
   const fields = [
-    { label: "ID", value: cenario.id },
-    { label: "Descrição", value: cenario.descricao },
-    { label: "Tipo de Cenário", value: cenario.tipoCenario },
-    { label: "Canal", value: cenario.canal },
-    { label: "Código da Mensagem", value: cenario.codigoMsg },
-    { label: "Conta Cedente", value: cenario.contaCedente },
-    { label: "Conta Cessionário", value: cenario.contaCessionaria },
-    { label: "Emissor", value: cenario.emissor },
-    { label: "Valor Financeiro", value: cenario.valorFinanceiro },
+    { label: "ID", value: passoTeste.id },
+    { label: "Descrição", value: passoTeste.descricao },
+    { label: "Tipo de Cenário", value: passoTeste.tipoPassoTeste },
+    { label: "Canal", value: passoTeste.canal },
+    { label: "Código da Mensagem", value: passoTeste.codigoMsg },
+    { label: "Conta Cedente", value: passoTeste.contaCedente },
+    { label: "Conta Cessionário", value: passoTeste.contaCessionaria },
+    { label: "Emissor", value: passoTeste.emissor },
+    { label: "Valor Financeiro", value: passoTeste.valorFinanceiro },
   ];
 
   const handleOpenSecondaryModal = (content: string) => {
@@ -51,7 +53,7 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
     <>
       <Overlay onClick={onClose}>
         <ModalContent onClick={(e) => e.stopPropagation()}>
-          <h2 style={{ textAlign: "center" }}>Detalhes do Cenário</h2>
+          <h2 style={{ textAlign: "center" }}>Detalhes do Passo Teste</h2>
           <CloseIcon onClick={onClose} aria-label="Fechar">
             <FiX />
           </CloseIcon>{" "}
@@ -67,24 +69,26 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
                   </DetailRow>
                 )
             )}
-            {cenario.xml && (
+            {passoTeste.xml && (
               <DetailRow>
                 <DetailLabel>XML:</DetailLabel>
                 <DetailValue>
-                  <Button onClick={() => handleOpenSecondaryModal(cenario.xml)}>
+                  <Button
+                    onClick={() => handleOpenSecondaryModal(passoTeste.xml)}
+                  >
                     <FiEye size={16} />
                     XML
                   </Button>
                 </DetailValue>
               </DetailRow>
             )}
-            {cenario.stringSelic && (
+            {passoTeste.stringSelic && (
               <DetailRow>
                 <DetailLabel>String Selic:</DetailLabel>
                 <DetailValue>
                   <Button
                     onClick={() =>
-                      handleOpenSecondaryModal(cenario.stringSelic)
+                      handleOpenSecondaryModal(passoTeste.stringSelic)
                     }
                   >
                     <FiEye size={16} />

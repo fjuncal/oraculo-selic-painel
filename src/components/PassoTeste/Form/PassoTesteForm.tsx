@@ -1,11 +1,10 @@
 import { getCamposParaCodigoMensagem } from "@/assets/config-form/configHelper";
 import { FormularioConfig } from "@/assets/formulariosConfig";
-import { salvarCenario } from "@/services/cenarioService";
 import { generatePositionalString } from "@/utils/generatePositionalString";
 import { useState } from "react";
 import { mensagemConfig } from "../../../assets/mensagemConfig";
 import { generateXML } from "../../../utils/generateXML";
-import CenarioFormField from "./CenarioFormField";
+import PassoTesteFormField from "./PassoTesteFormField";
 import Modal from "./Modal";
 import {
   BotaoVisualizar,
@@ -30,12 +29,13 @@ import {
   VisualizeButton,
 } from "./styles";
 import { Alert, Snackbar } from "@mui/material";
+import { salvarPassoTeste } from "@/services/passoTesteService";
 
-export default function CenarioForm() {
+export default function PassoTesteForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
   const [descricao, setDescricao] = useState<string>("");
-  const [tipoCenario, setTipoCenario] = useState<string>("");
+  const [tipoPassoTeste, setTipoPassoTeste] = useState<string>("");
   const [canal, setCanal] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -72,7 +72,7 @@ export default function CenarioForm() {
     const newErrors: { [key: string]: boolean } = {};
     // Verifica se os campos obrigatórios estão preenchidos
     if (!descricao) newErrors.descricao = true;
-    if (!tipoCenario) newErrors.tipoCenario = true;
+    if (!tipoPassoTeste) newErrors.tipoPassoTeste = true;
     if (!canal) newErrors.canal = true;
 
     const campos = getCamposParaCodigoMensagem(
@@ -103,9 +103,9 @@ export default function CenarioForm() {
           ? generatePositionalString(formData, codigoMensagem)
           : null;
 
-      const cenarioData = {
+      const passoTesteData = {
         descricao,
-        tipoCenario,
+        tipoPassoTeste,
         canal,
         codigoMsg: codigoMensagem,
         ...formData, // Inclui os campos dinâmicos do formulário
@@ -114,18 +114,18 @@ export default function CenarioForm() {
       };
 
       try {
-        const result = await salvarCenario(cenarioData);
-        setSnackbarMessage("Cenário cadastrado com sucesso!");
+        const result = await salvarPassoTeste(passoTesteData);
+        setSnackbarMessage("Passo Teste cadastrado com sucesso!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
         setDescricao("");
-        setTipoCenario("");
+        setTipoPassoTeste("");
         setCanal("");
         setCodigoMensagem("");
         setFormData({});
         setErrors({});
       } catch (error) {
-        setSnackbarMessage("Erro ao cadastrar cenário.");
+        setSnackbarMessage("Erro ao cadastrar passo teste.");
         setSnackbarSeverity("error");
         setSnackbarOpen(true);
       }
@@ -163,15 +163,15 @@ export default function CenarioForm() {
   return (
     <PageContainer>
       <Header>
-        <Title>Cadastrar Cenário</Title>
+        <Title>Cadastrar Passo Teste</Title>
       </Header>
       <FixedFieldsContainer>
         <InputWrapper>
-          <Label>Descrição do Cenário:</Label>
+          <Label>Descrição do Passo Teste:</Label>
           <TextArea
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
-            placeholder="Digite uma descrição para o cenário"
+            placeholder="Digite uma descrição para o passo teste"
             required
             className={errors.descricao ? "erro" : ""}
           />
@@ -183,16 +183,16 @@ export default function CenarioForm() {
         </InputWrapper>
 
         <InputWrapper>
-          <Label>Tipo de Cenário:</Label>
+          <Label>Tipo de Passo Teste:</Label>
           <StyledInput
             type="text"
-            value={tipoCenario}
-            onChange={(e) => setTipoCenario(e.target.value)}
-            placeholder="Digite o tipo de cenário"
+            value={tipoPassoTeste}
+            onChange={(e) => setTipoPassoTeste(e.target.value)}
+            placeholder="Digite o tipo de passo teste"
             required
             className={errors.descricao ? "erro" : ""}
           />
-          {errors.tipoCenario && (
+          {errors.tipoPassoTeste && (
             <MensagemErroCampoObrigatorio>
               Campo obrigatório
             </MensagemErroCampoObrigatorio>
@@ -259,7 +259,7 @@ export default function CenarioForm() {
                     ): field is FormularioConfig => field !== undefined
                   )
                   .map((field: FormularioConfig) => (
-                    <CenarioFormField
+                    <PassoTesteFormField
                       key={field.name}
                       field={field}
                       value={formData[field.name] || ""}
@@ -274,7 +274,9 @@ export default function CenarioForm() {
       )}
       {codigoMensagem && (
         <ButtonContainer>
-          <SubmitButton onClick={handleFormSubmit}>Salvar Cenário</SubmitButton>
+          <SubmitButton onClick={handleFormSubmit}>
+            Salvar Passo Teste
+          </SubmitButton>
         </ButtonContainer>
       )}
       <Snackbar

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { FieldContainer, Input, ErrorMessage } from "./styles";
 
 interface FieldProps {
@@ -14,7 +13,7 @@ interface FieldProps {
   error?: boolean;
 }
 
-export default function CenarioFormField({
+export default function PassoTesteFormField({
   field,
   value,
   onChange,

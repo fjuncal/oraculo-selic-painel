@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ActionButton,
   StyledRow,
@@ -6,12 +5,12 @@ import {
   TableContainer,
   Td,
   Th,
-} from "./styles/TabelaCenarioStyles";
+} from "./styles/PassoTesteStyles";
 
-export interface Cenario {
+export interface PassoTeste {
   id: number;
   descricao: string;
-  tipoCenario: string;
+  tipoPassoTeste: string;
   dataInclusao: string;
   codigoMsg: string;
   canal: string;
@@ -23,19 +22,19 @@ export interface Cenario {
   stringSelic: string;
 }
 
-interface CenarioTableProps {
-  cenarios: Cenario[];
-  onDetalheClick: (cenario: Cenario) => void;
-  onSelectCenario: (cenarioId: number) => void;
-  selectedCenarios: number[];
+interface PassoTesteTableProps {
+  passosTestes: PassoTeste[];
+  onDetalheClick: (passoTeste: PassoTeste) => void;
+  onSelectPassoTeste: (passoTesteId: number) => void;
+  selectedPassosTestes: number[];
 }
 
-export default function CenarioTabela({
-  cenarios,
+export default function PassoTesteTabela({
+  passosTestes,
   onDetalheClick,
-  onSelectCenario,
-  selectedCenarios,
-}: CenarioTableProps) {
+  onSelectPassoTeste,
+  selectedPassosTestes,
+}: PassoTesteTableProps) {
   function formatDateTime(dateString: string): string {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
@@ -67,27 +66,28 @@ export default function CenarioTabela({
           </tr>
         </thead>
         <tbody>
-          {cenarios.map((cenario) => (
-            <StyledRow key={cenario.id}>
-              <Td>
-                <input
-                  type="checkbox"
-                  checked={selectedCenarios.includes(cenario.id)}
-                  onChange={() => onSelectCenario(cenario.id)}
-                />
-              </Td>
-              <Td>{cenario.id}</Td>
-              <Td>{cenario.codigoMsg}</Td>
-              <Td>{cenario.descricao}</Td>
-              <Td>{cenario.tipoCenario}</Td>
-              <Td>{formatDateTime(cenario.dataInclusao)}</Td>
-              <Td>
-                <ActionButton onClick={() => onDetalheClick(cenario)}>
-                  Ver Detalhes
-                </ActionButton>
-              </Td>
-            </StyledRow>
-          ))}
+          {passosTestes &&
+            passosTestes.map((passoTeste) => (
+              <StyledRow key={passoTeste.id}>
+                <Td>
+                  <input
+                    type="checkbox"
+                    checked={selectedPassosTestes.includes(passoTeste.id)}
+                    onChange={() => onSelectPassoTeste(passoTeste.id)}
+                  />
+                </Td>
+                <Td>{passoTeste.id}</Td>
+                <Td>{passoTeste.codigoMsg}</Td>
+                <Td>{passoTeste.descricao}</Td>
+                <Td>{passoTeste.tipoPassoTeste}</Td>
+                <Td>{formatDateTime(passoTeste.dataInclusao)}</Td>
+                <Td>
+                  <ActionButton onClick={() => onDetalheClick(passoTeste)}>
+                    Ver Detalhes
+                  </ActionButton>
+                </Td>
+              </StyledRow>
+            ))}
         </tbody>
       </StyledTable>
     </TableContainer>

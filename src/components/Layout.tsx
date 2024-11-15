@@ -40,10 +40,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavItem>
             {isDropdownOpen && (
               <DropdownMenu>
-                <DropdownItem onClick={() => router.push("/cenario/cadastrar")}>
+                <DropdownItem
+                  onClick={() => router.push("/passo-teste/cadastrar")}
+                >
                   Cadastrar
                 </DropdownItem>
-                <DropdownItem onClick={() => router.push("/cenario/consultar")}>
+                <DropdownItem
+                  onClick={() => router.push("/passo-teste/consultar")}
+                >
                   Consultar
                 </DropdownItem>
               </DropdownMenu>

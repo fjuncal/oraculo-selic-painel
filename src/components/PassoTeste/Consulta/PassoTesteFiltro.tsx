@@ -1,7 +1,7 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import styled from "styled-components";
 
-interface CenarioFiltroProps {
+interface PassoTesteFiltroProps {
   codigoMensagem: string;
   setCodigoMensagem(value: string): void;
   descricao: string;
@@ -14,7 +14,7 @@ interface CenarioFiltroProps {
   setEndDate(value: string): void;
 }
 
-export default function CenarioFiltro({
+export default function PassoTesteFiltro({
   codigoMensagem,
   setCodigoMensagem,
   descricao,
@@ -25,7 +25,7 @@ export default function CenarioFiltro({
   setStartDate,
   endDate,
   setEndDate,
-}: CenarioFiltroProps) {
+}: PassoTesteFiltroProps) {
   return (
     <FiltersContainer>
       <Input
@@ -46,7 +46,7 @@ export default function CenarioFiltro({
       />
       <Input
         type="text"
-        placeholder="Buscar por tipo de cenário"
+        placeholder="Buscar por tipo de passo teste"
         value={tipoCenario}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setTipoCenario(e.target.value)

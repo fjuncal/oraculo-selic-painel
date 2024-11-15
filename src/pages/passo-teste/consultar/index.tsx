@@ -1,20 +1,23 @@
 // src/pages/cenarios/index.tsx
 import React, { useState } from "react";
-import { useBuscarCenarios } from "@/components/Cenario/Consulta/hooks/useBuscarCenarios";
-import CenarioTabela, {
-  Cenario,
-} from "@/components/Cenario/Consulta/CenarioTabela";
 import styled from "styled-components";
-import ModalCenario from "@/components/Cenario/Consulta/ModalCenario";
-import { enviarCenarios } from "@/services/cenarioService";
+import ModalCenario from "@/components/PassoTeste/Consulta/PassoTesteModal";
 import { Alert, Snackbar } from "@mui/material";
-import CenarioFiltro from "@/components/Cenario/Consulta/CenarioFiltro";
+import CenarioFiltro from "@/components/PassoTeste/Consulta/PassoTesteFiltro";
 import { FiSend } from "react-icons/fi";
+import { enviarPassoTeste } from "@/services/passoTesteService";
+import { useBuscarPassosTestes } from "@/components/PassoTeste/Consulta/hooks/useBuscarPassoTeste";
+import PassoTesteTabela, {
+  PassoTeste,
+} from "@/components/PassoTeste/Consulta/PassoTesteTabela";
 
-export default function Cenarios() {
-  const { cenarios, carregando } = useBuscarCenarios();
-  const [selectedCenarios, setSelectedCenarios] = useState<number[]>([]);
-  const [selectedCenario, setSelectedCenario] = useState<Cenario | null>(null);
+export default function PassosTestes() {
+  const { passosTestes, carregando } = useBuscarPassosTestes();
+  const [selectedPassosTestes, setSelectedPassosTestes] = useState<number[]>(
+    []
+  );
+  const [selectedPassoTeste, setSelectedPassoTeste] =
+    useState<PassoTeste | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -23,28 +26,32 @@ export default function Cenarios() {
   );
   const [codigoMensagem, setCodigoMensagem] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [tipoCenario, setTipoCenario] = useState("");
+  const [tipoPassoTeste, setTipoPassoTeste] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const cenariosFiltrados = cenarios.filter((cenario: Cenario) => {
-    const dataInclusao = new Date(cenario.dataInclusao);
+  const passosTestesFiltrados =
+    passosTestes &&
+    passosTestes.filter((passoTeste: PassoTeste) => {
+      const dataInclusao = new Date(passoTeste.dataInclusao);
 
-    return (
-      (!codigoMensagem ||
-        cenario.codigoMsg
-          ?.toLowerCase()
-          .includes(codigoMensagem.toLowerCase())) &&
-      (!descricao ||
-        cenario.descricao?.toLowerCase().includes(descricao.toLowerCase())) &&
-      (!tipoCenario ||
-        cenario.tipoCenario
-          ?.toLowerCase()
-          .includes(tipoCenario.toLowerCase())) &&
-      (!startDate || dataInclusao >= new Date(startDate)) &&
-      (!endDate || dataInclusao <= new Date(endDate))
-    );
-  });
+      return (
+        (!codigoMensagem ||
+          passoTeste.codigoMsg
+            ?.toLowerCase()
+            .includes(codigoMensagem.toLowerCase())) &&
+        (!descricao ||
+          passoTeste.descricao
+            ?.toLowerCase()
+            .includes(descricao.toLowerCase())) &&
+        (!tipoPassoTeste ||
+          passoTeste.tipoPassoTeste
+            ?.toLowerCase()
+            .includes(tipoPassoTeste.toLowerCase())) &&
+        (!startDate || dataInclusao >= new Date(startDate)) &&
+        (!endDate || dataInclusao <= new Date(endDate))
+      );
+    });
 
   if (carregando) return <p>Carregando...</p>;
 
@@ -52,45 +59,45 @@ export default function Cenarios() {
     setSnackbarOpen(false);
   };
 
-  const handleDetalheClick = (cenario: Cenario) => {
-    setSelectedCenario(cenario);
+  const handleDetalheClick = (passoTeste: PassoTeste) => {
+    setSelectedPassoTeste(passoTeste);
     setIsModalOpen(true);
   };
 
   // Função para fechar o modal
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedCenario(null);
+    setSelectedPassoTeste(null);
   };
 
-  // Função para selecionar/desmarcar cenários
-  const toggleSelectCenario = (cenarioId: number) => {
-    setSelectedCenarios((prevSelected) =>
-      prevSelected.includes(cenarioId)
-        ? prevSelected.filter((id) => id !== cenarioId)
-        : [...prevSelected, cenarioId]
+  // Função para selecionar/desmarcar passo teste
+  const toggleSelectPassoTeste = (passoTesteId: number) => {
+    setSelectedPassosTestes((prevSelected) =>
+      prevSelected.includes(passoTesteId)
+        ? prevSelected.filter((id) => id !== passoTesteId)
+        : [...prevSelected, passoTesteId]
     );
   };
 
-  // Função para enviar cenários selecionados
-  const handleEnviarCenarios = async () => {
+  // Função para enviar passos testes selecionados
+  const handleEnviarPassoTeste = async () => {
     try {
-      // Filtra os cenários selecionados
-      const cenariosSelecionados = cenarios.filter((c: Cenario) =>
-        selectedCenarios.includes(c.id)
+      // Filtra os passos testes selecionados
+      const passosTesteSelecionados = passosTestes.filter((pt: PassoTeste) =>
+        selectedPassosTestes.includes(pt.id)
       );
-      console.log(cenariosSelecionados);
+      console.log(passosTesteSelecionados);
 
-      // Envia a lista de cenários selecionados para o backend
-      await enviarCenarios(cenariosSelecionados);
+      // Envia a lista de passo teste selecionados para o backend
+      await enviarPassoTeste(passosTesteSelecionados);
 
       // Limpa a seleção após o envio
-      setSelectedCenarios([]);
-      setSnackbarMessage("Cenários enviados com sucesso!");
+      setSelectedPassosTestes([]);
+      setSnackbarMessage("Passos testes enviados com sucesso!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
     } catch (error) {
-      setSnackbarMessage("Erro ao enviar cenários.");
+      setSnackbarMessage("Erro ao enviar passos testes.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
@@ -98,34 +105,34 @@ export default function Cenarios() {
 
   return (
     <PageContainer>
-      <Title>Consulta de Cenários</Title>
+      <Title>Consulta de Passo Teste</Title>
       <CenarioFiltro
         codigoMensagem={codigoMensagem}
         setCodigoMensagem={setCodigoMensagem}
         descricao={descricao}
         setDescricao={setDescricao}
-        tipoCenario={tipoCenario}
-        setTipoCenario={setTipoCenario}
+        tipoCenario={tipoPassoTeste}
+        setTipoCenario={setTipoPassoTeste}
         startDate={startDate}
         setStartDate={setStartDate}
         endDate={endDate}
         setEndDate={setEndDate}
       />
       <Button
-        onClick={handleEnviarCenarios}
-        disabled={selectedCenarios.length === 0}
+        onClick={handleEnviarPassoTeste}
+        disabled={selectedPassosTestes.length === 0}
       >
         <FiSend size={16} />
         Enviar Cenários
       </Button>
-      <CenarioTabela
-        cenarios={cenariosFiltrados}
+      <PassoTesteTabela
+        passosTestes={passosTestesFiltrados}
         onDetalheClick={handleDetalheClick}
-        onSelectCenario={toggleSelectCenario}
-        selectedCenarios={selectedCenarios}
+        onSelectPassoTeste={toggleSelectPassoTeste}
+        selectedPassosTestes={selectedPassosTestes}
       />
       {isModalOpen && (
-        <ModalCenario cenario={selectedCenario} onClose={closeModal} />
+        <ModalCenario passoTeste={selectedPassoTeste} onClose={closeModal} />
       )}
 
       <Snackbar
