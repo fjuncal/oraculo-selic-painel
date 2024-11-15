@@ -11,8 +11,9 @@ import {
   DetailTable,
   DetailValue,
   BackIcon,
+  CloseIcon,
 } from "./styles/TabelaCenarioStyles";
-import { FiArrowLeft, FiEye } from "react-icons/fi";
+import { FiArrowLeft, FiEye, FiX } from "react-icons/fi";
 
 interface ModalProps {
   cenario: Cenario | null;
@@ -50,8 +51,10 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
     <>
       <Overlay>
         <ModalContent>
-          <h2>Detalhes do Cenário</h2>
-          <CloseButton onClick={onClose}>×</CloseButton>
+          <h2 style={{ textAlign: "center" }}>Detalhes do Cenário</h2>
+          <CloseIcon onClick={onClose} aria-label="Fechar">
+            <FiX />
+          </CloseIcon>{" "}
           <DetailTable>
             {fields.map(
               (field, index) =>

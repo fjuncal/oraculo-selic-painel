@@ -152,3 +152,23 @@ export const BackIcon = styled.button`
     color: #3730a3;
   }
 `;
+
+export const CloseIcon = styled.button`
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: color 0.2s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: #3730a3;
+  }
+`;
