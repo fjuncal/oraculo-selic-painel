@@ -115,8 +115,8 @@ export default function Cenarios() {
         onClick={handleEnviarCenarios}
         disabled={selectedCenarios.length === 0}
       >
-        <FiSend size={16} style={{ marginRight: "3px" }} />
-        Enviar Cenários Selecionados
+        <FiSend size={16} />
+        Enviar Cenários
       </Button>
       <CenarioTabela
         cenarios={cenariosFiltrados}
