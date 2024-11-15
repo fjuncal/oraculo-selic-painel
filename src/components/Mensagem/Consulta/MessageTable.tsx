@@ -40,30 +40,29 @@ export default function MessageTable({
             <Th>Correl ID</Th>
             <Th>Código</Th>
             <Th>Canal</Th>
-            <Th>Status Final</Th> {/* Apenas status final na tabela */}
+            <Th>Status Final</Th>
             <Th>Data de Inclusão</Th>
             <Th>Ação</Th>
           </tr>
         </thead>
         <tbody>
-          {messages &&
-            messages.map((message) => (
-              <StyledRow key={message.id}>
-                <Td>{message.id}</Td>
-                <Td>{message.correlationId}</Td>
-                <Td>{message.codigoMensagem}</Td>
-                <Td>{message.canal}</Td>
-                <Td>{message.statusFinal}</Td> {/* Exibe o status final */}
-                <Td>{formatDateTime(message.dataInclusao)}</Td>
-                <Td>
-                  <ActionButton
-                    onClick={() => onStatusClick(message.correlationId)}
-                  >
-                    Ver Status
-                  </ActionButton>
-                </Td>
-              </StyledRow>
-            ))}
+          {messages.map((message) => (
+            <StyledRow key={message.id}>
+              <Td>{message.id}</Td>
+              <Td>{message.correlationId}</Td>
+              <Td>{message.codigoMensagem}</Td>
+              <Td>{message.canal}</Td>
+              <Td>{message.statusFinal}</Td>
+              <Td>{formatDateTime(message.dataInclusao)}</Td>
+              <Td>
+                <ActionButton
+                  onClick={() => onStatusClick(message.correlationId)}
+                >
+                  Ver Status
+                </ActionButton>
+              </Td>
+            </StyledRow>
+          ))}
         </tbody>
       </StyledTable>
     </TableContainer>

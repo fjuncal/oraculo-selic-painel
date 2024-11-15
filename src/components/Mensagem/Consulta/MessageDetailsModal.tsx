@@ -25,24 +25,24 @@ export default function MessageDetailsModal({
         </Header>
         <Content>
           <StatusRow>
-            <StatusIcon status={status.sent.status} />
-            <StatusText isError={status.sent.status === "NÃO PROCESSADO"}>
+            <StatusIcon $status={status.sent.status} />
+            <StatusText $isError={status.sent.status === "NÃO PROCESSADO"}>
               <strong>Envio:</strong> {status.sent.status} -{" "}
               {status.sent.detail}
             </StatusText>
           </StatusRow>
           <Divider />
           <StatusRow>
-            <StatusIcon status={status.arrived.status} />
-            <StatusText isError={status.arrived.status === "NÃO PROCESSADO"}>
+            <StatusIcon $status={status.arrived.status} />
+            <StatusText $isError={status.arrived.status === "NÃO PROCESSADO"}>
               <strong>Chegada:</strong> {status.arrived.status} -{" "}
               {status.arrived.detail}
             </StatusText>
           </StatusRow>
           <Divider />
           <StatusRow>
-            <StatusIcon status={status.processed.status} />
-            <StatusText isError={status.processed.status === "NÃO PROCESSADO"}>
+            <StatusIcon $status={status.processed.status} />
+            <StatusText $isError={status.processed.status === "NÃO PROCESSADO"}>
               <strong>Processamento:</strong> {status.processed.status} -{" "}
               {status.processed.detail}
             </StatusText>
@@ -107,28 +107,26 @@ const StatusRow = styled.div`
   gap: 12px;
 `;
 
-const StatusIcon = styled.div<{ status: string }>`
+const StatusIcon = styled.div<{ $status: string }>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background-color: ${(props) =>
-    props.status === "NÃO PROCESSADO"
+    props.$status === "NÃO PROCESSADO"
       ? "red"
-      : props.status === "ENVIANDO"
+      : props.$status === "ENVIANDO"
       ? "#4f46e5"
-      : props.status === "EM_PROCESSAMENTO"
+      : props.$status === "EM_PROCESSAMENTO"
       ? "#34d399"
-      : props.status === "PROCESSADO"
+      : props.$status === "PROCESSADO"
       ? "#f97316"
       : "#333"};
 `;
-
-const StatusText = styled.p<{ isError: boolean }>`
+const StatusText = styled.p<{ $isError: boolean }>`
   font-size: 0.95rem;
-  color: ${(props) => (props.isError ? "red" : "#25b818")};
+  color: ${(props) => (props.$isError ? "red" : "#25b818")};
   margin: 0;
 `;
-
 const Divider = styled.hr`
   border: none;
   border-top: 1px solid #e5e7eb;
