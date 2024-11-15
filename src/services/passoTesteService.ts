@@ -1,11 +1,11 @@
 import { PassoTeste } from "@/components/PassoTeste/Consulta/PassoTesteTabela";
 import axios from "axios";
 
-export async function salvarPassoTeste(cenarioData: any) {
+export async function salvarPassoTeste(passoTesteData: any) {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/passo-teste`,
-      cenarioData,
+      passoTesteData,
       {
         headers: {
           "Content-Type": "application/json",

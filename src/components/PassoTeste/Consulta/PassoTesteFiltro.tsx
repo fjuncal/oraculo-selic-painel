@@ -6,8 +6,8 @@ interface PassoTesteFiltroProps {
   setCodigoMensagem(value: string): void;
   descricao: string;
   setDescricao(value: string): void;
-  tipoCenario: string;
-  setTipoCenario(value: string): void;
+  tipoPassoTeste: string;
+  setTipoPassoTeste(value: string): void;
   startDate: string;
   setStartDate(value: string): void;
   endDate: string;
@@ -19,8 +19,8 @@ export default function PassoTesteFiltro({
   setCodigoMensagem,
   descricao,
   setDescricao,
-  tipoCenario,
-  setTipoCenario,
+  tipoPassoTeste,
+  setTipoPassoTeste,
   startDate,
   setStartDate,
   endDate,
@@ -47,9 +47,9 @@ export default function PassoTesteFiltro({
       <Input
         type="text"
         placeholder="Buscar por tipo de passo teste"
-        value={tipoCenario}
+        value={tipoPassoTeste}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setTipoCenario(e.target.value)
+          setTipoPassoTeste(e.target.value)
         }
       />
       <Input

@@ -19,7 +19,7 @@ interface PassoTesteModalProps {
   onClose: () => void;
 }
 
-export default function ModalCenario({
+export default function PassoTesteModal({
   passoTeste,
   onClose,
 }: PassoTesteModalProps) {

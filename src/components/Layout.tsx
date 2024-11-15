@@ -77,11 +77,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <MobileNavItem onClick={() => router.push("/status")}>
             Status
           </MobileNavItem>
-          <MobileNavItem onClick={() => router.push("/cenario/cadastrar")}>
-            Cadastrar Cenário
+          <MobileNavItem onClick={() => router.push("/passo-teste/cadastrar")}>
+            Cadastrar Passos Testes
           </MobileNavItem>
-          <MobileNavItem onClick={() => router.push("/cenario/consultar")}>
-            Consultar Cenário
+          <MobileNavItem onClick={() => router.push("/passo-teste/consultar")}>
+            Consultar Passos Testes
           </MobileNavItem>
         </MobileMenu>
       )}

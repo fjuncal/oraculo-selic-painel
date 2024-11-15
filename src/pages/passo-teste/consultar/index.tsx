@@ -1,15 +1,14 @@
-// src/pages/cenarios/index.tsx
 import React, { useState } from "react";
 import styled from "styled-components";
-import ModalCenario from "@/components/PassoTeste/Consulta/PassoTesteModal";
 import { Alert, Snackbar } from "@mui/material";
-import CenarioFiltro from "@/components/PassoTeste/Consulta/PassoTesteFiltro";
 import { FiSend } from "react-icons/fi";
 import { enviarPassoTeste } from "@/services/passoTesteService";
 import { useBuscarPassosTestes } from "@/components/PassoTeste/Consulta/hooks/useBuscarPassoTeste";
 import PassoTesteTabela, {
   PassoTeste,
 } from "@/components/PassoTeste/Consulta/PassoTesteTabela";
+import PassoTesteFiltro from "@/components/PassoTeste/Consulta/PassoTesteFiltro";
+import PassoTesteModal from "@/components/PassoTeste/Consulta/PassoTesteModal";
 
 export default function PassosTestes() {
   const { passosTestes, carregando } = useBuscarPassosTestes();
@@ -106,13 +105,13 @@ export default function PassosTestes() {
   return (
     <PageContainer>
       <Title>Consulta de Passo Teste</Title>
-      <CenarioFiltro
+      <PassoTesteFiltro
         codigoMensagem={codigoMensagem}
         setCodigoMensagem={setCodigoMensagem}
         descricao={descricao}
         setDescricao={setDescricao}
-        tipoCenario={tipoPassoTeste}
-        setTipoCenario={setTipoPassoTeste}
+        tipoPassoTeste={tipoPassoTeste}
+        setTipoPassoTeste={setTipoPassoTeste}
         startDate={startDate}
         setStartDate={setStartDate}
         endDate={endDate}
@@ -132,7 +131,7 @@ export default function PassosTestes() {
         selectedPassosTestes={selectedPassosTestes}
       />
       {isModalOpen && (
-        <ModalCenario passoTeste={selectedPassoTeste} onClose={closeModal} />
+        <PassoTesteModal passoTeste={selectedPassoTeste} onClose={closeModal} />
       )}
 
       <Snackbar
