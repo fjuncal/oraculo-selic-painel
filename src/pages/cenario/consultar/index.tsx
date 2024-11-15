@@ -9,6 +9,7 @@ import ModalCenario from "@/components/Cenario/Consulta/ModalCenario";
 import { enviarCenarios } from "@/services/cenarioService";
 import { Alert, Snackbar } from "@mui/material";
 import CenarioFiltro from "@/components/Cenario/Consulta/CenarioFiltro";
+import { FiSend } from "react-icons/fi";
 
 export default function Cenarios() {
   const { cenarios, carregando } = useBuscarCenarios();
@@ -114,6 +115,7 @@ export default function Cenarios() {
         onClick={handleEnviarCenarios}
         disabled={selectedCenarios.length === 0}
       >
+        <FiSend size={16} style={{ marginRight: "3px" }} />
         Enviar Cenários Selecionados
       </Button>
       <CenarioTabela
@@ -159,21 +161,26 @@ const Title = styled.h1`
 `;
 
 const Button = styled.button`
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  font-size: 1rem;
+  padding: 8px 16px; /* Reduzi o padding */
+  margin-bottom: 10px; /* Menor margem inferior */
+  font-size: 0.9rem; /* Fonte um pouco menor */
   font-weight: 500;
   color: #ffffff;
   background-color: #4f46e5;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px; /* Bordas mais suaves */
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o texto e o ícone */
+
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
   &:hover:enabled {
     background-color: #3730a3;
+    transform: scale(1.02); /* Leve aumento no hover */
   }
 `;
