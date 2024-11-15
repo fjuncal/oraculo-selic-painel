@@ -49,13 +49,14 @@ export default function Mensagens() {
       });
   }, []);
   useEffect(() => {
-    if (messages) {
-      const filtered = messages.filter((message) => {
+    const filtered =
+      messages &&
+      messages.filter((message) => {
         const matchesContent = message.codigoMensagem
           .toLowerCase()
           .includes(searchContent.toLowerCase());
         const matchesStatus = statusFilter
-          ? message.statusFinal === statusFilter // Filtra pelo status final
+          ? message.statusFinal === statusFilter
           : true;
         const matchesDate =
           startDate && endDate
@@ -64,8 +65,7 @@ export default function Mensagens() {
             : true;
         return matchesContent && matchesStatus && matchesDate;
       });
-      setFilteredMessages(filtered);
-    }
+    setFilteredMessages(filtered);
   }, [searchContent, statusFilter, startDate, endDate, messages]);
 
   const fetchMessageStatus = async (correlationId: string) => {

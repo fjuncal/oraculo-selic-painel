@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <AppContainer>
       <TopBar>
         <LogoContainer onClick={() => router.push("/")}>
-          <StyledImage src={logoSelic} alt="Logo SELIC" />
+          <StyledImage src={logoSelic} alt="Logo SELIC" priority />
         </LogoContainer>
         <NavLinks>
           <NavItem onClick={() => router.push("/")}>

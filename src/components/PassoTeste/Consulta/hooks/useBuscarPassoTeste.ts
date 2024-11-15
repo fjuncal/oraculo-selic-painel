@@ -1,8 +1,9 @@
 import { buscarPassoTeste } from "@/services/passoTesteService";
 import { useEffect, useState } from "react";
+import { PassoTeste } from "../PassoTesteTabela";
 
 export const useBuscarPassosTestes = () => {
-  const [passosTestes, setPassosTestes] = useState([]);
+  const [passosTestes, setPassosTestes] = useState<PassoTeste[]>([]);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
