@@ -49,8 +49,8 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
 
   return (
     <>
-      <Overlay>
-        <ModalContent>
+      <Overlay onClick={onClose}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
           <h2 style={{ textAlign: "center" }}>Detalhes do Cenário</h2>
           <CloseIcon onClick={onClose} aria-label="Fechar">
             <FiX />
