@@ -73,8 +73,6 @@ export default function Mensagens() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/status?correlationId=${correlationId}`
       );
-      console.log(response.data);
-
       setSelectedMessageStatus(response.data);
       setSelectedMessageId(correlationId);
       setError("");

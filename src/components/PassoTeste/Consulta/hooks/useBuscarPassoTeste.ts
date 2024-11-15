@@ -10,7 +10,6 @@ export const useBuscarPassosTestes = () => {
       try {
         const data = await buscarPassoTeste();
         setPassosTestes(data);
-        console.log(data);
       } catch (error) {
         console.error("Erro ao buscar passo teste:", error);
       } finally {
