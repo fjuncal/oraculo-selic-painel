@@ -54,81 +54,101 @@ export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 `;
 
 export const ModalContent = styled.div`
-  background: white;
-  padding: 20px;
+  position: relative; /* Necessário para o CloseButton ser posicionado corretamente */
+  background: #ffffff;
   border-radius: 8px;
-  width: 80%;
+  padding: 20px;
   max-width: 500px;
-  position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
 `;
-
 export const CloseButton = styled.button`
-  position: absolute;
+  position: absolute; /* Posiciona dentro do ModalContent */
   top: 10px;
   right: 10px;
-  background: none;
+  background: rgba(255, 255, 255, 0.9);
   border: none;
   font-size: 1.5rem;
-  cursor: pointer;
+  font-weight: bold;
   color: #333;
+  cursor: pointer;
+  z-index: 10;
+
+  &:hover {
+    color: #ff0000; /* Muda a cor ao passar o mouse */
+  }
+`;
+
+export const DetailTable = styled.div`
+  margin-top: 20px;
+`;
+
+export const DetailRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+export const DetailLabel = styled.span`
+  font-weight: bold;
+  color: #555;
+`;
+
+export const DetailValue = styled.span`
+  color: #333;
+  text-align: right;
+`;
+
+export const ContentWrapper = styled.div`
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
 `;
 
 export const Button = styled.button`
-  padding: 6px 12px;
-  font-size: 0.85rem;
+  padding: 8px 12px;
+  font-size: 0.9rem;
   font-weight: 500;
   color: #ffffff;
   background-color: #4f46e5;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
   &:hover {
     background-color: #3730a3;
   }
 `;
+export const BackIcon = styled.button`
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
 
-export const ContentWrapper = styled.div`
-  max-height: 300px;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-`;
+  display: inline-flex;
+  align-items: center;
 
-export const DetailTable = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 10px;
-`;
-
-export const DetailRow = styled.div`
-  display: contents;
-`;
-
-export const DetailLabel = styled.span`
-  font-weight: bold;
-  color: #333;
-  padding: 5px;
-  background-color: #f1f1f1;
-  border-radius: 4px;
-`;
-
-export const DetailValue = styled.span`
-  padding: 5px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  color: #666;
+  &:hover {
+    color: #3730a3;
+  }
 `;

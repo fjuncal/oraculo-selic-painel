@@ -10,7 +10,9 @@ import {
   DetailRow,
   DetailTable,
   DetailValue,
+  BackIcon,
 } from "./styles/TabelaCenarioStyles";
+import { FiArrowLeft, FiEye } from "react-icons/fi";
 
 interface ModalProps {
   cenario: Cenario | null;
@@ -35,6 +37,7 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
     { label: "Emissor", value: cenario.emissor },
     { label: "Valor Financeiro", value: cenario.valorFinanceiro },
   ];
+
   const handleOpenSecondaryModal = (content: string) => {
     setSecondaryModalContent(content);
   };
@@ -42,19 +45,22 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
   const closeSecondaryModal = () => {
     setSecondaryModalContent(null);
   };
+
   return (
     <>
       <Overlay>
         <ModalContent>
-          <CloseButton onClick={onClose}>×</CloseButton>
           <h2>Detalhes do Cenário</h2>
+          <CloseButton onClick={onClose}>×</CloseButton>
           <DetailTable>
             {fields.map(
               (field, index) =>
                 field.value && (
                   <DetailRow key={index}>
                     <DetailLabel>{field.label}:</DetailLabel>
-                    <DetailValue>{field.value}</DetailValue>
+                    <DetailValue style={{ fontWeight: "bold" }}>
+                      {field.value}
+                    </DetailValue>
                   </DetailRow>
                 )
             )}
@@ -63,7 +69,8 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
                 <DetailLabel>XML:</DetailLabel>
                 <DetailValue>
                   <Button onClick={() => handleOpenSecondaryModal(cenario.xml)}>
-                    Visualizar XML
+                    <FiEye size={16} />
+                    XML
                   </Button>
                 </DetailValue>
               </DetailRow>
@@ -77,7 +84,8 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
                       handleOpenSecondaryModal(cenario.stringSelic)
                     }
                   >
-                    Visualizar String Selic
+                    <FiEye size={16} />
+                    String Selic
                   </Button>
                 </DetailValue>
               </DetailRow>
@@ -89,9 +97,13 @@ export default function ModalCenario({ cenario, onClose }: ModalProps) {
       {secondaryModalContent && (
         <Overlay>
           <ModalContent>
-            <CloseButton onClick={closeSecondaryModal}>×</CloseButton>
-            <h2>Conteúdo Detalhado</h2>
-            <ContentWrapper>{secondaryModalContent}</ContentWrapper>
+            <BackIcon onClick={closeSecondaryModal} aria-label="Voltar">
+              <FiArrowLeft />
+            </BackIcon>{" "}
+            <h2 style={{ textAlign: "center" }}>XML ou String Selic</h2>
+            <ContentWrapper>
+              <pre>{secondaryModalContent}</pre>
+            </ContentWrapper>
           </ModalContent>
         </Overlay>
       )}
