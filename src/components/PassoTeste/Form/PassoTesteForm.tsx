@@ -30,6 +30,7 @@ import {
 } from "./styles";
 import { Alert, Snackbar } from "@mui/material";
 import { salvarPassoTeste } from "@/services/passoTesteService";
+import SnackbarComponent from "@/components/SnackbarComponent";
 
 export default function PassoTesteForm() {
   const [codigoMensagem, setCodigoMensagem] = useState<string>("");
@@ -279,20 +280,12 @@ export default function PassoTesteForm() {
           </SubmitButton>
         </ButtonContainer>
       )}
-      <Snackbar
+      <SnackbarComponent
         open={snackbarOpen}
-        autoHideDuration={3000}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarSeverity}
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      />
     </PageContainer>
   );
 }

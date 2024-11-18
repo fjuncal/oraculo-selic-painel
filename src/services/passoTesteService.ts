@@ -19,7 +19,7 @@ export async function salvarPassoTeste(passoTesteData: any) {
   }
 }
 
-export const buscarPassoTeste = async () => {
+export const buscarPassosTestes = async () => {
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/passo-teste/list`
   );

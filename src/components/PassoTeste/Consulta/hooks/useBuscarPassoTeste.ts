@@ -1,4 +1,4 @@
-import { buscarPassoTeste } from "@/services/passoTesteService";
+import { buscarPassosTestes } from "@/services/passoTesteService";
 import { useEffect, useState } from "react";
 import { PassoTeste } from "../PassoTesteTabela";
 
@@ -9,7 +9,7 @@ export const useBuscarPassosTestes = () => {
   useEffect(() => {
     const obterPassoTeste = async () => {
       try {
-        const data = await buscarPassoTeste();
+        const data = await buscarPassosTestes();
         setPassosTestes(data);
       } catch (error) {
         console.error("Erro ao buscar passo teste:", error);
