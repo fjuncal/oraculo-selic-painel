@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           >
             <NavItem>
               <FiFile size={20} />
-              <span>Cenário</span>
+              <span>Passo Teste</span>
               <FiChevronDown size={16} style={{ marginLeft: "5px" }} />
             </NavItem>
             {isDropdownOpen && (
