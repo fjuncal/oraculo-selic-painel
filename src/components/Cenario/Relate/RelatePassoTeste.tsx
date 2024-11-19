@@ -10,8 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "./RelatePassoTeste.styles";
-import Modal from "@/components/PassoTeste/Form/Modal";
 import RelacionamentoModal from "./RelacionamentoModal";
+import RelatePassoTesteFiltro from "./RelatePassoTesteFiltro";
 
 interface PassoTeste {
   id: number;
@@ -38,6 +38,24 @@ export default function RelatePassoTeste({
   const [modalPassoTeste, setModalPassoTeste] = useState<PassoTeste | null>(
     null
   );
+
+  const [canal, setCanal] = useState("");
+  const [codigoMensagem, setCodigoMensagem] = useState("");
+  const [descricao, setDescricao] = useState("");
+
+  const filteredPassosTestes = passosTestes.filter((passoTeste) => {
+    return (
+      (!canal ||
+        passoTeste.canal.toLowerCase().includes(canal.toLowerCase())) &&
+      (!codigoMensagem ||
+        passoTeste.codigoMsg
+          .toLowerCase()
+          .includes(codigoMensagem.toLowerCase())) &&
+      (!descricao ||
+        passoTeste.descricao.toLowerCase().includes(descricao.toLowerCase()))
+    );
+  });
+
   const handleOpenModal = (content: PassoTeste) => {
     setModalPassoTeste(content);
   };
@@ -79,6 +97,15 @@ export default function RelatePassoTeste({
         ))}
       </Select>
 
+      {/* Filtro para passos testes */}
+      <RelatePassoTesteFiltro
+        canal={canal}
+        setCanal={setCanal}
+        codigoMensagem={codigoMensagem}
+        setCodigoMensagem={setCodigoMensagem}
+        descricao={descricao}
+        setDescricao={setDescricao}
+      />
       {/* Tabela para exibir passos testes */}
       <Table>
         <thead>
@@ -91,8 +118,8 @@ export default function RelatePassoTeste({
           </TableRow>
         </thead>
         <tbody>
-          {passosTestes &&
-            passosTestes.map((passoTeste) => (
+          {filteredPassosTestes &&
+            filteredPassosTestes.map((passoTeste) => (
               <TableRow key={passoTeste.id}>
                 <TableCell>
                   <input
