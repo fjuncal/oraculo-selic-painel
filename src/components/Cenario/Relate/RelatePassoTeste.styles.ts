@@ -75,3 +75,93 @@ export const DetalhesButton = styled.button`
     background-color: #3730a3;
   }
 `;
+
+export const NavigationButton = styled.button`
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #4f46e5;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: #3730a3;
+  }
+
+  &:disabled {
+    background-color: #bbb; /* Cor neutra para estado desabilitado */
+    cursor: not-allowed;
+  }
+`;
+
+interface SelectButtonProps {
+  isSelected: boolean;
+}
+export const SelectButton = styled.button<SelectButtonProps>`
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: ${(props) => (props.isSelected ? "#22c55e" : "#4f46e5")};
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${(props) => (props.isSelected ? "#16a34a" : "#3730a3")};
+  }
+`;
+
+// Estilo para o contêiner das tabelas
+export const TablesContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+export const TableWrapper = styled.div`
+  flex: 1;
+  overflow: auto; /* Para rolagem horizontal, se necessário */
+`;
+
+export const SearchAndTableContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Input = styled.input`
+  display: block;
+  width: 80%; /* Limitar a largura do campo de busca */
+  max-width: 400px; /* Largura máxima para telas grandes */
+  margin: 0 auto 10px auto; /* Centralizar e adicionar espaço abaixo */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: #4f46e5;
+    outline: none;
+  }
+`;
+
+export const FiltersContainer = styled.div`
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente (se necessário) */
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+`;

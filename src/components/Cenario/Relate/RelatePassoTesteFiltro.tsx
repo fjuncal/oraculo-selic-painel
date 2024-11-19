@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
+import { FiltersContainer } from "./RelatePassoTeste.styles";
 
 interface RelatePassoTesteFiltroProps {
   canal: string;
@@ -47,19 +48,6 @@ export default function RelatePassoTesteFiltro({
     </FiltersContainer>
   );
 }
-
-const FiltersContainer = styled.div`
-  display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente (se necessário) */
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #f3f4f6;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
-  flex-wrap: wrap; /* Permite quebra de linha em telas menores */
-`;
 
 const Input = styled.input`
   padding: 10px;
