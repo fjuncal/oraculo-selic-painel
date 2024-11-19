@@ -113,6 +113,12 @@ export const SelectButton = styled.button<SelectButtonProps>`
   &:hover {
     background-color: ${(props) => (props.isSelected ? "#16a34a" : "#3730a3")};
   }
+
+  &:disabled {
+    background-color: #b0b0b0; /* Cinza para estado desabilitado */
+    color: #ffffff; /* Mantém o texto visível */
+    cursor: not-allowed; /* Indica que está desabilitado */
+  }
 `;
 
 // Estilo para o contêiner das tabelas

@@ -110,10 +110,19 @@ export default function RelatePassoTeste({
       setSelectedPassosTestes([]);
     }
   };
+  const handleToggleCenario = (cenarioId: number) => {
+    if (selectedCenario === cenarioId) {
+      // Desmarcar o cenário selecionado
+      setSelectedCenario(null);
+    } else {
+      // Selecionar um novo cenário
+      setSelectedCenario(cenarioId);
+    }
+  };
 
   return (
     <Container>
-      <h2>Relacionar Cenário com Passos Testes</h2>
+      <h2>Relacionar</h2>
 
       <TablesContainer>
         {/* Tabela de cenários */}
@@ -152,9 +161,13 @@ export default function RelatePassoTeste({
                     <TableCell>
                       <SelectButton
                         isSelected={cenario.id === selectedCenario}
-                        onClick={() => setSelectedCenario(cenario.id)}
+                        onClick={() => handleToggleCenario(cenario.id)}
+                        disabled={
+                          selectedCenario !== null &&
+                          selectedCenario !== cenario.id
+                        }
                       >
-                        {selectedCenario === cenario.id
+                        {cenario.id === selectedCenario
                           ? "Selecionado"
                           : "Selecionar"}
                       </SelectButton>
