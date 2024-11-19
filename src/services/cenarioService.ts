@@ -25,10 +25,15 @@ export async function relacionarCenario(
   cenarioId: number,
   passosTestesIds: number[]
 ) {
+  const payload = passosTestesIds.map((id, index) => ({
+    cenarioId,
+    passoTesteId: id,
+    ordenacao: index + 1, // Define a ordenação
+  }));
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios/relate`,
-      { cenarioId, passosTestesIds },
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios/relacionar`,
+      payload,
       {
         headers: {
           "Content-Type": "application/json",
