@@ -165,3 +165,10 @@ export const FiltersContainer = styled.div`
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
   flex-wrap: wrap; /* Permite quebra de linha em telas menores */
 `;
+
+export const Pagination = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+`;

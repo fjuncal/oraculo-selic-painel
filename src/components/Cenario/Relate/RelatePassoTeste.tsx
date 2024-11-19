@@ -13,6 +13,8 @@ import {
   TablesContainer,
   TableWrapper,
   SearchAndTableContainer,
+  Pagination,
+  FiltersContainer,
 } from "./RelatePassoTeste.styles";
 import RelacionamentoModal from "./RelacionamentoModal";
 import RelatePassoTesteFiltro from "./RelatePassoTesteFiltro";
@@ -55,8 +57,10 @@ export default function RelatePassoTeste({
 
   const [cenarioSearch, setCenarioSearch] = useState("");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2;
+  // Estados de paginação
+  const [cenariosPage, setCenariosPage] = useState(1);
+  const [passosTestesPage, setPassosTestesPage] = useState(1);
+  const itemsPerPage = 5;
 
   const filteredPassosTestes = passosTestes.filter((passoTeste) => {
     return (
@@ -76,8 +80,13 @@ export default function RelatePassoTeste({
   );
 
   const paginatedCenarios = filteredCenarios.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (cenariosPage - 1) * itemsPerPage,
+    cenariosPage * itemsPerPage
+  );
+
+  const paginatedPassosTestes = filteredPassosTestes.slice(
+    (passosTestesPage - 1) * itemsPerPage,
+    passosTestesPage * itemsPerPage
   );
 
   const handleOpenModal = (content: PassoTeste) => {
@@ -154,6 +163,35 @@ export default function RelatePassoTeste({
                 ))}
               </tbody>
             </Table>
+
+            {/* Paginação para cenários */}
+            <Pagination>
+              <NavigationButton
+                onClick={() => setCenariosPage((prev) => Math.max(prev - 1, 1))}
+                disabled={cenariosPage === 1}
+              >
+                Anterior
+              </NavigationButton>
+              <span>
+                Página {cenariosPage} de{" "}
+                {Math.ceil(filteredCenarios.length / itemsPerPage)}
+              </span>
+              <NavigationButton
+                onClick={() =>
+                  setCenariosPage((prev) =>
+                    Math.min(
+                      prev + 1,
+                      Math.ceil(filteredCenarios.length / itemsPerPage)
+                    )
+                  )
+                }
+                disabled={
+                  cenariosPage * itemsPerPage >= filteredCenarios.length
+                }
+              >
+                Próxima
+              </NavigationButton>
+            </Pagination>
           </SearchAndTableContainer>
         </TableWrapper>
 
@@ -179,7 +217,7 @@ export default function RelatePassoTeste({
               </TableRow>
             </thead>
             <tbody>
-              {filteredPassosTestes.map((passoTeste) => (
+              {paginatedPassosTestes.map((passoTeste) => (
                 <TableRow key={passoTeste.id}>
                   <TableCell>
                     <input
@@ -200,6 +238,37 @@ export default function RelatePassoTeste({
               ))}
             </tbody>
           </Table>
+
+          {/* Paginação para passos testes */}
+          <Pagination>
+            <NavigationButton
+              onClick={() =>
+                setPassosTestesPage((prev) => Math.max(prev - 1, 1))
+              }
+              disabled={passosTestesPage === 1}
+            >
+              Anterior
+            </NavigationButton>
+            <span>
+              Página {passosTestesPage} de{" "}
+              {Math.ceil(filteredPassosTestes.length / itemsPerPage)}
+            </span>
+            <NavigationButton
+              onClick={() =>
+                setPassosTestesPage((prev) =>
+                  Math.min(
+                    prev + 1,
+                    Math.ceil(filteredPassosTestes.length / itemsPerPage)
+                  )
+                )
+              }
+              disabled={
+                passosTestesPage * itemsPerPage >= filteredPassosTestes.length
+              }
+            >
+              Próxima
+            </NavigationButton>
+          </Pagination>
         </TableWrapper>
       </TablesContainer>
 
@@ -220,16 +289,3 @@ export default function RelatePassoTeste({
     </Container>
   );
 }
-
-const FiltersContainer = styled.div`
-  display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente (se necessário) */
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #f3f4f6;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
-  flex-wrap: wrap; /* Permite quebra de linha em telas menores */
-`;
