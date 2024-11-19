@@ -6,7 +6,7 @@ export async function salvarCenario(cenario: {
 }) {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios/save`,
       cenario,
       {
         headers: {
@@ -56,5 +56,17 @@ export async function buscarCenarios() {
   } catch (error) {
     console.error("Erro ao buscar cenários:", error);
     throw new Error("Erro ao buscar cenários");
+  }
+}
+
+export async function buscarCenariosComPassosTestes() {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios/list`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar cenários com passos testes:", error);
+    throw new Error("Erro ao buscar cenários com passos testes");
   }
 }
