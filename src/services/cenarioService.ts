@@ -70,3 +70,21 @@ export async function buscarCenariosComPassosTestes() {
     throw new Error("Erro ao buscar cenários com passos testes");
   }
 }
+
+export async function enviarCenario(cenario: any) {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages`,
+      cenario,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao enviar cenário:", error);
+    throw new Error("Erro ao enviar cenário");
+  }
+}

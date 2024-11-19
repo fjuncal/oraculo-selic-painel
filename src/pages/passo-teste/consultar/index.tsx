@@ -78,30 +78,6 @@ export default function PassosTestes() {
     );
   };
 
-  // Função para enviar passos testes selecionados
-  const handleEnviarPassoTeste = async () => {
-    try {
-      // Filtra os passos testes selecionados
-      const passosTesteSelecionados = passosTestes.filter((pt: PassoTeste) =>
-        selectedPassosTestes.includes(pt.id)
-      );
-      console.log(passosTesteSelecionados);
-
-      // Envia a lista de passo teste selecionados para o backend
-      await enviarPassoTeste(passosTesteSelecionados);
-
-      // Limpa a seleção após o envio
-      setSelectedPassosTestes([]);
-      setSnackbarMessage("Passos testes enviados com sucesso!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-    } catch (error) {
-      setSnackbarMessage("Erro ao enviar passos testes.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-    }
-  };
-
   return (
     <PageContainer>
       <Title>Consulta de Passo Teste</Title>
@@ -117,13 +93,6 @@ export default function PassosTestes() {
         endDate={endDate}
         setEndDate={setEndDate}
       />
-      <Button
-        onClick={handleEnviarPassoTeste}
-        disabled={selectedPassosTestes.length === 0}
-      >
-        <FiSend size={16} />
-        Enviar Cenários
-      </Button>
       <PassoTesteTabela
         passosTestes={passosTestesFiltrados}
         onDetalheClick={handleDetalheClick}
@@ -164,29 +133,4 @@ const PageContainer = styled.div`
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-  padding: 8px 16px; /* Reduzi o padding */
-  margin-bottom: 10px; /* Menor margem inferior */
-  font-size: 0.9rem; /* Fonte um pouco menor */
-  font-weight: 500;
-  color: #ffffff;
-  background-color: #4f46e5;
-  border: none;
-  border-radius: 4px; /* Bordas mais suaves */
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* Espaço entre o texto e o ícone */
-
-  &:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  &:hover:enabled {
-    background-color: #3730a3;
-    transform: scale(1.02); /* Leve aumento no hover */
-  }
 `;
