@@ -2,11 +2,14 @@ import RelatePassoTeste from "@/components/Cenario/Relate/RelatePassoTeste";
 import SnackbarComponent from "@/components/SnackbarComponent";
 import { buscarCenarios, relacionarCenario } from "@/services/cenarioService";
 import { buscarPassosTestes } from "@/services/passoTesteService";
+import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function RelacionarCenario() {
   const [cenarios, setCenarios] = useState([]);
   const [passosTestes, setPassosTestes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
@@ -24,11 +27,12 @@ export default function RelacionarCenario() {
         ]);
         setCenarios(cenariosData);
         setPassosTestes(passosTestesData);
-
+        setIsLoading(false);
         setSnackbarMessage("Conseguiu buscar os relacionamentos!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
       } catch (error) {
+        setIsLoading(true);
         setSnackbarMessage("Erro ao buscar os relacionamentos.");
         setSnackbarSeverity("error");
         setSnackbarOpen(true);
@@ -52,11 +56,17 @@ export default function RelacionarCenario() {
   };
   return (
     <div>
-      <RelatePassoTeste
-        cenarios={cenarios}
-        passosTestes={passosTestes}
-        onRelate={handleRelate}
-      />
+      {isLoading ? (
+        <div style={{ textAlign: "center", padding: "20px" }}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <RelatePassoTeste
+          cenarios={cenarios}
+          passosTestes={passosTestes}
+          onRelate={handleRelate}
+        />
+      )}
       <SnackbarComponent
         open={snackbarOpen}
         message={snackbarMessage}

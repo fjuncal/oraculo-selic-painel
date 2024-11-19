@@ -2,15 +2,22 @@ import { dividerClasses } from "@mui/material";
 import { useState } from "react";
 import {
   Container,
-  PassosTestesList,
-  PassoTesteItem,
+  DetalhesButton,
   RelateButton,
   Select,
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
 } from "./RelatePassoTeste.styles";
+import Modal from "@/components/PassoTeste/Form/Modal";
+import RelacionamentoModal from "./RelacionamentoModal";
 
 interface PassoTeste {
   id: number;
   descricao: string;
+  codigoMsg: string;
+  canal: string;
 }
 
 interface RelatePassoTesteProps {
@@ -28,7 +35,16 @@ export default function RelatePassoTeste({
   const [selectedPassosTestes, setSelectedPassosTestes] = useState<number[]>(
     []
   );
+  const [modalPassoTeste, setModalPassoTeste] = useState<PassoTeste | null>(
+    null
+  );
+  const handleOpenModal = (content: PassoTeste) => {
+    setModalPassoTeste(content);
+  };
 
+  const handleCloseModal = () => {
+    setModalPassoTeste(null);
+  };
   const togglePassoTeste = (passoTesteId: number) => {
     setSelectedPassosTestes((prev) =>
       prev.includes(passoTesteId)
@@ -47,6 +63,8 @@ export default function RelatePassoTeste({
   return (
     <Container>
       <h2>Relacionar Cenário com Passos Testes</h2>
+
+      {/* Dropdown para selecionar cenários */}
       <Select
         value={selectedCenario || ""}
         onChange={(e) => setSelectedCenario(Number(e.target.value))}
@@ -61,22 +79,55 @@ export default function RelatePassoTeste({
         ))}
       </Select>
 
-      <PassosTestesList>
-        {passosTestes.map((passoTeste) => (
-          <PassoTesteItem key={passoTeste.id}>
-            <input
-              type="checkbox"
-              checked={selectedPassosTestes.includes(passoTeste.id)}
-              onChange={() => togglePassoTeste(passoTeste.id)}
-            />
-            {passoTeste.descricao}
-          </PassoTesteItem>
-        ))}
-      </PassosTestesList>
+      {/* Tabela para exibir passos testes */}
+      <Table>
+        <thead>
+          <TableRow>
+            <TableHeader>Selecionar</TableHeader>
+            <TableHeader>Código da Mensagem</TableHeader>
+            <TableHeader>Descrição</TableHeader>
+            <TableHeader>Canal</TableHeader>
+            <TableHeader>Ação</TableHeader>
+          </TableRow>
+        </thead>
+        <tbody>
+          {passosTestes &&
+            passosTestes.map((passoTeste) => (
+              <TableRow key={passoTeste.id}>
+                <TableCell>
+                  <input
+                    type="checkbox"
+                    checked={selectedPassosTestes.includes(passoTeste.id)}
+                    onChange={() => togglePassoTeste(passoTeste.id)}
+                  />
+                </TableCell>
+                <TableCell>{passoTeste.codigoMsg}</TableCell>
+                <TableCell>{passoTeste.descricao}</TableCell>
+                <TableCell>{passoTeste.canal}</TableCell>
+                <TableCell>
+                  <DetalhesButton onClick={() => handleOpenModal(passoTeste)}>
+                    Ver Detalhes
+                  </DetalhesButton>
+                </TableCell>
+              </TableRow>
+            ))}
+        </tbody>
+      </Table>
 
-      <RelateButton onClick={handleRelate} disabled={!selectedCenario}>
+      {/* Botão para relacionar */}
+      <RelateButton
+        onClick={handleRelate}
+        disabled={!selectedCenario || selectedPassosTestes.length === 0}
+      >
         Relacionar
       </RelateButton>
+
+      {/* Modal para exibir detalhes do passo teste */}
+      <RelacionamentoModal
+        isOpen={!!modalPassoTeste}
+        onClose={handleCloseModal}
+        passoTeste={modalPassoTeste}
+      />
     </Container>
   );
 }
