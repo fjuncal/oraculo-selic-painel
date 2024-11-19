@@ -55,7 +55,7 @@ export default function CenariosPage() {
 
   return (
     <PageContainer>
-      <h1>Cenários e Passos Testes</h1>
+      <h1 style={{ textAlign: "center" }}>Cenários e Passos Testes</h1>
       <Table>
         <thead>
           <tr>

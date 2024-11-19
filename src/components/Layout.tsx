@@ -52,6 +52,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 >
                   Relacionar
                 </DropdownItem>
+                <DropdownItem onClick={() => router.push("/cenarios")}>
+                  Consultar / Enviar
+                </DropdownItem>
               </DropdownMenu>
             )}
           </DropdownContainer>
@@ -113,6 +116,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </MobileNavItem>
           <MobileNavItem onClick={() => router.push("/cenarios/relacionar")}>
             Relacionar Cenários
+          </MobileNavItem>
+          <MobileNavItem onClick={() => router.push("/cenarios")}>
+            Consultar / Enviar
           </MobileNavItem>
         </MobileMenu>
       )}

@@ -1,4 +1,6 @@
+import { useState } from "react";
 import styled from "styled-components";
+import RelacionamentoModal from "../Relate/RelacionamentoModal";
 
 interface PassoTeste {
   id: number;
@@ -9,12 +11,15 @@ interface PassoTeste {
 }
 
 interface PassosTestesTableProps {
-  passosTestes?: PassoTeste[]; // Torna `passosTestes` opcional
+  passosTestes?: PassoTeste[];
 }
 
 export default function PassosTestesRelacionamentoTabela({
-  passosTestes = [], // Define um valor padrão como array vazio
+  passosTestes = [],
 }: PassosTestesTableProps) {
+  const [selectedPassoTeste, setSelectedPassoTeste] =
+    useState<PassoTeste | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   if (!passosTestes.length) {
     return (
       <p style={{ marginTop: "5px", color: "red" }}>
@@ -23,35 +28,52 @@ export default function PassosTestesRelacionamentoTabela({
     );
   }
 
+  const handleOpenModal = (passoTeste: PassoTeste) => {
+    setSelectedPassoTeste(passoTeste);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedPassoTeste(null);
+    setIsModalOpen(false);
+  };
+
   return (
-    <Table>
-      <thead>
-        <tr>
-          <Th>ID</Th>
-          <Th>Descrição</Th>
-          <Th>Código Mensagem</Th>
-          <Th>Tipo</Th>
-          <Th>Data Inclusão</Th>
-          <Th>Ação</Th>
-        </tr>
-      </thead>
-      <tbody>
-        {passosTestes.map((passoTeste) => (
-          <tr key={passoTeste.id}>
-            <Td>{passoTeste.id}</Td>
-            <Td>{passoTeste.descricao}</Td>
-            <Td>{passoTeste.codigoMsg}</Td>
-            <Td>{passoTeste.tipoPassoTeste}</Td>
-            <Td>{new Date(passoTeste.dataInclusao).toLocaleDateString()}</Td>
-            <Td>
-              <DetalhesButton onClick={() => alert(JSON.stringify(passoTeste))}>
-                Ver Detalhes
-              </DetalhesButton>
-            </Td>
+    <>
+      <Table>
+        <thead>
+          <tr>
+            <Th>ID</Th>
+            <Th>Descrição</Th>
+            <Th>Código Mensagem</Th>
+            <Th>Tipo</Th>
+            <Th>Data Inclusão</Th>
+            <Th>Ação</Th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {passosTestes.map((passoTeste) => (
+            <tr key={passoTeste.id}>
+              <Td>{passoTeste.id}</Td>
+              <Td>{passoTeste.descricao}</Td>
+              <Td>{passoTeste.codigoMsg}</Td>
+              <Td>{passoTeste.tipoPassoTeste}</Td>
+              <Td>{new Date(passoTeste.dataInclusao).toLocaleDateString()}</Td>
+              <Td>
+                <DetalhesButton onClick={() => handleOpenModal(passoTeste)}>
+                  Ver Detalhes
+                </DetalhesButton>
+              </Td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      <RelacionamentoModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        passoTeste={selectedPassoTeste}
+      />
+    </>
   );
 }
 

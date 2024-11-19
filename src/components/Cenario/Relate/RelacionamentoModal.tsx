@@ -8,6 +8,7 @@ import {
   ModalOverlay,
   ModalTitle,
 } from "@/components/PassoTeste/Form/styles";
+import { useRef } from "react";
 
 interface RelacionamentoModalProps {
   isOpen: boolean;
@@ -20,6 +21,8 @@ const RelacionamentoModal: React.FC<RelacionamentoModalProps> = ({
   onClose,
   passoTeste,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   if (!isOpen || !passoTeste) return null;
 
   // Filtra os atributos que não devem ser exibidos
@@ -27,9 +30,14 @@ const RelacionamentoModal: React.FC<RelacionamentoModalProps> = ({
     ([key]) => key !== "stringSelic" && key !== "xml"
   );
 
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      onClose(); // Fecha o modal se o clique ocorreu fora do conteúdo
+    }
+  };
   return (
-    <ModalOverlay>
-      <ModalContent>
+    <ModalOverlay onClick={handleOverlayClick}>
+      <ModalContent ref={modalRef}>
         <ModalHeader>
           <ModalTitle>Detalhes do Passo Teste</ModalTitle>
           <CloseButton onClick={onClose}>×</CloseButton>
