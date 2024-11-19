@@ -7,15 +7,17 @@ import {
   FiActivity,
   FiFile,
   FiChevronDown,
+  FiFileText,
 } from "react-icons/fi";
 import Image from "next/image";
 import { useState } from "react";
 import logoSelic from "../../public/selic-logo/selic-logo.png";
-import fotoSelic from "../../public/selic-logo/selic-foto.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpenCenario, setIsDropdownOpenCenario] = useState(false);
+  const [isDropdownOpenPassoTeste, setIsDropdownOpenPassoTeste] =
+    useState(false);
 
   const router = useRouter();
   return (
@@ -29,16 +31,42 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <FiHome size={20} />
             <span>Início</span>
           </NavItem>
+
+          {/* Dropdown para Cenários */}
           <DropdownContainer
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
+            onMouseEnter={() => setIsDropdownOpenCenario(true)}
+            onMouseLeave={() => setIsDropdownOpenCenario(false)}
+          >
+            <NavItem>
+              <FiFileText size={20} />
+              <span>Cenário</span>
+              <FiChevronDown size={16} style={{ marginLeft: "5px" }} />
+            </NavItem>
+            {isDropdownOpenCenario && (
+              <DropdownMenu>
+                <DropdownItem onClick={() => router.push("/cenarios/criar")}>
+                  Criar
+                </DropdownItem>
+                <DropdownItem
+                  onClick={() => router.push("/cenarios/relacionar")}
+                >
+                  Relacionar
+                </DropdownItem>
+              </DropdownMenu>
+            )}
+          </DropdownContainer>
+
+          {/* Dropdown para Passo Teste */}
+          <DropdownContainer
+            onMouseEnter={() => setIsDropdownOpenPassoTeste(true)}
+            onMouseLeave={() => setIsDropdownOpenPassoTeste(false)}
           >
             <NavItem>
               <FiFile size={20} />
               <span>Passo Teste</span>
               <FiChevronDown size={16} style={{ marginLeft: "5px" }} />
             </NavItem>
-            {isDropdownOpen && (
+            {isDropdownOpenPassoTeste && (
               <DropdownMenu>
                 <DropdownItem
                   onClick={() => router.push("/passo-teste/cadastrar")}
@@ -53,13 +81,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </DropdownMenu>
             )}
           </DropdownContainer>
+
           <NavItem onClick={() => router.push("/mensagens")}>
             <FiMessageSquare size={20} />
             <span>Mensagens</span>
-          </NavItem>
-          <NavItem onClick={() => router.push("/status")}>
-            <FiActivity size={20} />
-            <span>Status</span>
           </NavItem>
         </NavLinks>
 
@@ -82,6 +107,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </MobileNavItem>
           <MobileNavItem onClick={() => router.push("/passo-teste/consultar")}>
             Consultar Passos Testes
+          </MobileNavItem>
+          <MobileNavItem onClick={() => router.push("/cenarios/criar")}>
+            Criar Cenários
+          </MobileNavItem>
+          <MobileNavItem onClick={() => router.push("/cenarios/relacionar")}>
+            Relacionar Cenários
           </MobileNavItem>
         </MobileMenu>
       )}
