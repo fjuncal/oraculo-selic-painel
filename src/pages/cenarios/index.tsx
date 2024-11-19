@@ -6,7 +6,7 @@ import {
 } from "@/services/cenarioService";
 import { Alert } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { FiSend } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiSend } from "react-icons/fi";
 import styled from "styled-components";
 
 interface PassoTeste {
@@ -95,66 +95,68 @@ export default function CenariosPage() {
   }
 
   return (
-    <>
-      <PageContainer>
-        <h1 style={{ textAlign: "center" }}>Cenários e Passos Testes</h1>
-        <Table>
-          <thead>
-            <tr>
-              <Th>Selecionar</Th>
-              <Th>ID</Th>
-              <Th>Descrição</Th>
-              <Th>Tipo</Th>
-              <Th>Data Inclusão</Th>
-              <Th>Ação</Th>
-            </tr>
-          </thead>
-          <tbody>
-            {cenarios.map((cenario) => (
-              <React.Fragment key={cenario.id}>
-                <tr>
-                  <Td>
-                    <input
-                      type="checkbox"
-                      checked={selectedCenario === cenario.id}
-                      onChange={() => toggleSelectCenario(cenario.id)}
+    <PageContainer>
+      <Title>Cenários e Passos Testes</Title>
+      <StyledTable>
+        <thead>
+          <tr>
+            <Th>Selecionar</Th>
+            <Th>ID</Th>
+            <Th>Descrição</Th>
+            <Th>Tipo</Th>
+            <Th>Data Inclusão</Th>
+            <Th>Ação</Th>
+          </tr>
+        </thead>
+        <tbody>
+          {cenarios.map((cenario) => (
+            <React.Fragment key={cenario.id}>
+              <Row isExpanded={expandedCenario === cenario.id}>
+                <Td>
+                  <Checkbox
+                    type="checkbox"
+                    checked={selectedCenario === cenario.id}
+                    onChange={() => toggleSelectCenario(cenario.id)}
+                  />
+                </Td>
+                <Td>{cenario.id}</Td>
+                <Td>{cenario.descricao}</Td>
+                <Td>{cenario.tipo}</Td>
+                <Td>{new Date(cenario.dataInclusao).toLocaleDateString()}</Td>
+                <Td>
+                  <ExpandButton onClick={() => toggleExpand(cenario.id)}>
+                    {expandedCenario === cenario.id ? (
+                      <FiChevronUp />
+                    ) : (
+                      <FiChevronDown />
+                    )}
+                  </ExpandButton>
+                </Td>
+              </Row>
+              {expandedCenario === cenario.id && (
+                <ExpandedRow>
+                  <td colSpan={6}>
+                    <PassosTestesRelacionamentoTabela
+                      passosTestes={cenario.passosTestes}
                     />
-                  </Td>
-                  <Td>{cenario.id}</Td>
-                  <Td>{cenario.descricao}</Td>
-                  <Td>{cenario.tipo}</Td>
-                  <Td>{new Date(cenario.dataInclusao).toLocaleDateString()}</Td>
-                  <Td>
-                    <ActionButton onClick={() => toggleExpand(cenario.id)}>
-                      {expandedCenario === cenario.id ? "Esconder" : "Expandir"}
-                    </ActionButton>
-                  </Td>
-                </tr>
-                {expandedCenario === cenario.id && (
-                  <ExpandedRow>
-                    <td colSpan={6}>
-                      <PassosTestesRelacionamentoTabela
-                        passosTestes={cenario.passosTestes}
-                      />
-                    </td>
-                  </ExpandedRow>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </Table>
-        <Button onClick={handleEnviarCenario} disabled={!selectedCenario}>
-          <FiSend size={16} />
-          Enviar Cenário
-        </Button>
-        <SnackbarComponent
-          open={snackbarOpen}
-          message={snackbarMessage}
-          severity={snackbarSeverity}
-          onClose={handleSnackbarClose}
-        />
-      </PageContainer>
-    </>
+                  </td>
+                </ExpandedRow>
+              )}
+            </React.Fragment>
+          ))}
+        </tbody>
+      </StyledTable>
+      <SendButton onClick={handleEnviarCenario} disabled={!selectedCenario}>
+        <FiSend size={16} />
+        Enviar Cenário
+      </SendButton>
+      <SnackbarComponent
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        onClose={handleSnackbarClose}
+      />
+    </PageContainer>
   );
 }
 
@@ -162,54 +164,72 @@ const PageContainer = styled.div`
   padding: 20px;
 `;
 
-const Table = styled.table`
+const Title = styled.h1`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
 `;
 
 const Th = styled.th`
   text-align: left;
-  border-bottom: 1px solid #ddd;
-  padding: 10px;
-`;
-
-const Td = styled.td`
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-`;
-
-const ActionButton = styled.button`
-  padding: 6px 12px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #ffffff;
+  padding: 12px;
   background-color: #4f46e5;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  color: #fff;
+`;
+
+const Row = styled.tr<{ isExpanded: boolean }>`
+  background-color: ${(props) => (props.isExpanded ? "#eef2ff" : "#fff")};
   &:hover {
-    background-color: #3730a3;
+    background-color: #f9fafb;
   }
 `;
 
 const ExpandedRow = styled.tr`
-  background-color: #f9fafb;
+  background-color: #eef2ff;
+  transition: all 0.3s ease-in-out;
 `;
 
-const Button = styled.button`
-  padding: 8px 16px;
+const Td = styled.td`
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+`;
+
+const Checkbox = styled.input`
+  cursor: pointer;
+`;
+
+const ExpandButton = styled.button`
+  background: none;
+  border: none;
+  color: #4f46e5;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: #3730a3;
+  }
+`;
+
+const SendButton = styled.button`
   margin-top: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #ffffff;
+  padding: 10px 20px;
   background-color: #4f46e5;
+  color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
 
@@ -217,6 +237,7 @@ const Button = styled.button`
     background-color: #ccc;
     cursor: not-allowed;
   }
+
   &:hover:enabled {
     background-color: #3730a3;
   }
