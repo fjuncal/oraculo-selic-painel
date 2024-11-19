@@ -4,9 +4,8 @@ import {
   buscarCenariosComPassosTestes,
   enviarCenario,
 } from "@/services/cenarioService";
-import { Alert } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { FiChevronDown, FiChevronUp, FiSend } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface PassoTeste {
@@ -30,7 +29,7 @@ export default function CenariosPage() {
   const [expandedCenario, setExpandedCenario] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCenario, setSelectedCenario] = useState<number | null>(null); // ID do cenário selecionado
+  const [selectedCenario, setSelectedCenario] = useState<number | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
@@ -38,15 +37,19 @@ export default function CenariosPage() {
   );
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
+  const [filters, setFilters] = useState({
+    descricao: "",
+    tipo: "",
+    dataInicio: "",
+    dataFim: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await buscarCenariosComPassosTestes();
         setCenarios(data);
-        console.log(data);
       } catch (error) {
-        console.error("Erro ao buscar cenários:", error);
         setError("Erro ao carregar cenários. Tente novamente.");
       } finally {
         setLoading(false);
@@ -66,16 +69,13 @@ export default function CenariosPage() {
   const handleEnviarCenario = async () => {
     if (!selectedCenario) return;
 
+    const cenarioToSend = cenarios.find(
+      (cenario) => cenario.id === selectedCenario
+    );
+    if (!cenarioToSend) return;
+
     try {
-      // Obtém o cenário completo baseado no ID selecionado
-      const cenarioToSend = cenarios.find(
-        (cenario) => cenario.id === selectedCenario
-      );
-
-      if (!cenarioToSend) throw new Error("Cenário não encontrado.");
-
       await enviarCenario(cenarioToSend);
-
       setSnackbarMessage("Cenário enviado com sucesso!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
@@ -86,16 +86,58 @@ export default function CenariosPage() {
     }
   };
 
-  if (loading) {
-    return <p>Carregando...</p>;
-  }
+  const handleFilterChange = (field: string, value: string) => {
+    setFilters({ ...filters, [field]: value });
+  };
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+  const filteredCenarios = cenarios.filter((cenario) => {
+    const dataInclusao = new Date(cenario.dataInclusao);
+    const dataInicio = filters.dataInicio ? new Date(filters.dataInicio) : null;
+    const dataFim = filters.dataFim ? new Date(filters.dataFim) : null;
+
+    return (
+      (!filters.descricao ||
+        cenario.descricao
+          .toLowerCase()
+          .includes(filters.descricao.toLowerCase())) &&
+      (!filters.tipo ||
+        cenario.tipo.toLowerCase().includes(filters.tipo.toLowerCase())) &&
+      (!dataInicio || dataInclusao >= dataInicio) &&
+      (!dataFim || dataInclusao <= dataFim)
+    );
+  });
+
+  if (loading) return <p>Carregando...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <PageContainer>
+      <Title>Filtrar Cenários</Title>
+      <FiltersContainer>
+        <Input
+          placeholder="Descrição"
+          value={filters.descricao}
+          onChange={(e) => handleFilterChange("descricao", e.target.value)}
+        />
+        <Input
+          placeholder="Tipo"
+          value={filters.tipo}
+          onChange={(e) => handleFilterChange("tipo", e.target.value)}
+        />
+        <Input
+          type="date"
+          placeholder="Data Início"
+          value={filters.dataInicio}
+          onChange={(e) => handleFilterChange("dataInicio", e.target.value)}
+        />
+        <Input
+          type="date"
+          placeholder="Data Fim"
+          value={filters.dataFim}
+          onChange={(e) => handleFilterChange("dataFim", e.target.value)}
+        />
+      </FiltersContainer>
+
       <Title>Cenários e Passos Testes</Title>
       <StyledTable>
         <thead>
@@ -109,7 +151,7 @@ export default function CenariosPage() {
           </tr>
         </thead>
         <tbody>
-          {cenarios.map((cenario) => (
+          {filteredCenarios.map((cenario) => (
             <React.Fragment key={cenario.id}>
               <Row isExpanded={expandedCenario === cenario.id}>
                 <Td>
@@ -164,9 +206,27 @@ const PageContainer = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
-  text-align: center;
+const Title = styled.h2`
+  margin-bottom: 10px;
+`;
+
+const FiltersContainer = styled.div`
+  display: flex;
+  gap: 10px;
   margin-bottom: 20px;
+`;
+
+const Input = styled.input`
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  flex: 1;
+  font-size: 0.9rem;
+
+  &:focus {
+    border-color: #4f46e5;
+    outline: none;
+  }
 `;
 
 const StyledTable = styled.table`
