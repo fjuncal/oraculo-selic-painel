@@ -44,6 +44,9 @@ export default function CenariosPage() {
     dataFim: "",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 1;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -107,6 +110,17 @@ export default function CenariosPage() {
     );
   });
 
+  const paginatedCenarios = filteredCenarios.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredCenarios.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   if (loading) return <p>Carregando...</p>;
   if (error) return <p>{error}</p>;
 
@@ -151,7 +165,7 @@ export default function CenariosPage() {
           </tr>
         </thead>
         <tbody>
-          {filteredCenarios.map((cenario) => (
+          {paginatedCenarios.map((cenario) => (
             <React.Fragment key={cenario.id}>
               <Row isExpanded={expandedCenario === cenario.id}>
                 <Td>
@@ -188,6 +202,17 @@ export default function CenariosPage() {
           ))}
         </tbody>
       </StyledTable>
+      <Pagination>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <PageButton
+            key={index + 1}
+            active={currentPage === index + 1}
+            onClick={() => handlePageChange(index + 1)}
+          >
+            {index + 1}
+          </PageButton>
+        ))}
+      </Pagination>
       <SendButton onClick={handleEnviarCenario} disabled={!selectedCenario}>
         <FiSend size={16} />
         Enviar Cenário
@@ -208,6 +233,7 @@ const PageContainer = styled.div`
 
 const Title = styled.h2`
   margin-bottom: 10px;
+  text-align: center;
 `;
 
 const FiltersContainer = styled.div`
@@ -300,5 +326,26 @@ const SendButton = styled.button`
 
   &:hover:enabled {
     background-color: #3730a3;
+  }
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px;
+`;
+
+const PageButton = styled.button<{ active: boolean }>`
+  padding: 8px 12px;
+  background-color: ${(props) => (props.active ? "#4f46e5" : "#fff")};
+  color: ${(props) => (props.active ? "#fff" : "#4f46e5")};
+  border: 1px solid #4f46e5;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #4f46e5;
+    color: #fff;
   }
 `;
