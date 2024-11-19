@@ -45,7 +45,7 @@ export default function CenariosPage() {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 1;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,32 +93,52 @@ export default function CenariosPage() {
     setFilters({ ...filters, [field]: value });
   };
 
-  const filteredCenarios = cenarios.filter((cenario) => {
-    const dataInclusao = new Date(cenario.dataInclusao);
-    const dataInicio = filters.dataInicio ? new Date(filters.dataInicio) : null;
-    const dataFim = filters.dataFim ? new Date(filters.dataFim) : null;
+  const filteredCenarios =
+    cenarios &&
+    cenarios.filter((cenario) => {
+      const dataInclusao = new Date(cenario.dataInclusao);
+      const dataInicio = filters.dataInicio
+        ? new Date(filters.dataInicio)
+        : null;
+      const dataFim = filters.dataFim ? new Date(filters.dataFim) : null;
 
-    return (
-      (!filters.descricao ||
-        cenario.descricao
-          .toLowerCase()
-          .includes(filters.descricao.toLowerCase())) &&
-      (!filters.tipo ||
-        cenario.tipo.toLowerCase().includes(filters.tipo.toLowerCase())) &&
-      (!dataInicio || dataInclusao >= dataInicio) &&
-      (!dataFim || dataInclusao <= dataFim)
+      return (
+        (!filters.descricao ||
+          cenario.descricao
+            .toLowerCase()
+            .includes(filters.descricao.toLowerCase())) &&
+        (!filters.tipo ||
+          cenario.tipo.toLowerCase().includes(filters.tipo.toLowerCase())) &&
+        (!dataInicio || dataInclusao >= dataInicio) &&
+        (!dataFim || dataInclusao <= dataFim)
+      );
+    });
+
+  const paginatedCenarios =
+    filteredCenarios &&
+    filteredCenarios.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
     );
-  });
 
-  const paginatedCenarios = filteredCenarios.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const totalPages = Math.ceil(filteredCenarios.length / itemsPerPage);
+  const totalPages =
+    filteredCenarios && Math.ceil(filteredCenarios.length / itemsPerPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleOrderChange = (
+    cenarioId: number,
+    orderedPassosTestes: PassoTeste[]
+  ) => {
+    setCenarios((prev) =>
+      prev.map((cenario) =>
+        cenario.id === cenarioId
+          ? { ...cenario, passosTestes: orderedPassosTestes }
+          : cenario
+      )
+    );
   };
 
   if (loading) return <p>Carregando...</p>;
@@ -165,41 +185,45 @@ export default function CenariosPage() {
           </tr>
         </thead>
         <tbody>
-          {paginatedCenarios.map((cenario) => (
-            <React.Fragment key={cenario.id}>
-              <Row isExpanded={expandedCenario === cenario.id}>
-                <Td>
-                  <Checkbox
-                    type="checkbox"
-                    checked={selectedCenario === cenario.id}
-                    onChange={() => toggleSelectCenario(cenario.id)}
-                  />
-                </Td>
-                <Td>{cenario.id}</Td>
-                <Td>{cenario.descricao}</Td>
-                <Td>{cenario.tipo}</Td>
-                <Td>{new Date(cenario.dataInclusao).toLocaleDateString()}</Td>
-                <Td>
-                  <ExpandButton onClick={() => toggleExpand(cenario.id)}>
-                    {expandedCenario === cenario.id ? (
-                      <FiChevronUp />
-                    ) : (
-                      <FiChevronDown />
-                    )}
-                  </ExpandButton>
-                </Td>
-              </Row>
-              {expandedCenario === cenario.id && (
-                <ExpandedRow>
-                  <td colSpan={6}>
-                    <PassosTestesRelacionamentoTabela
-                      passosTestes={cenario.passosTestes}
+          {paginatedCenarios &&
+            paginatedCenarios.map((cenario) => (
+              <React.Fragment key={cenario.id}>
+                <Row isExpanded={expandedCenario === cenario.id}>
+                  <Td>
+                    <Checkbox
+                      type="checkbox"
+                      checked={selectedCenario === cenario.id}
+                      onChange={() => toggleSelectCenario(cenario.id)}
                     />
-                  </td>
-                </ExpandedRow>
-              )}
-            </React.Fragment>
-          ))}
+                  </Td>
+                  <Td>{cenario.id}</Td>
+                  <Td>{cenario.descricao}</Td>
+                  <Td>{cenario.tipo}</Td>
+                  <Td>{new Date(cenario.dataInclusao).toLocaleDateString()}</Td>
+                  <Td>
+                    <ExpandButton onClick={() => toggleExpand(cenario.id)}>
+                      {expandedCenario === cenario.id ? (
+                        <FiChevronUp />
+                      ) : (
+                        <FiChevronDown />
+                      )}
+                    </ExpandButton>
+                  </Td>
+                </Row>
+                {expandedCenario === cenario.id && (
+                  <ExpandedRow>
+                    <td colSpan={6}>
+                      <PassosTestesRelacionamentoTabela
+                        passosTestes={cenario.passosTestes}
+                        onOrderChange={(orderedPassos) =>
+                          handleOrderChange(cenario.id, orderedPassos)
+                        }
+                      />
+                    </td>
+                  </ExpandedRow>
+                )}
+              </React.Fragment>
+            ))}
         </tbody>
       </StyledTable>
       <Pagination>

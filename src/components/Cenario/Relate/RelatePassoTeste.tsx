@@ -62,32 +62,40 @@ export default function RelatePassoTeste({
   const [passosTestesPage, setPassosTestesPage] = useState(1);
   const itemsPerPage = 5;
 
-  const filteredPassosTestes = passosTestes.filter((passoTeste) => {
-    return (
-      (!canal ||
-        passoTeste.canal.toLowerCase().includes(canal.toLowerCase())) &&
-      (!codigoMensagem ||
-        passoTeste.codigoMsg
-          .toLowerCase()
-          .includes(codigoMensagem.toLowerCase())) &&
-      (!descricao ||
-        passoTeste.descricao.toLowerCase().includes(descricao.toLowerCase()))
+  const filteredPassosTestes =
+    passosTestes &&
+    passosTestes.filter((passoTeste) => {
+      return (
+        (!canal ||
+          passoTeste.canal.toLowerCase().includes(canal.toLowerCase())) &&
+        (!codigoMensagem ||
+          passoTeste.codigoMsg
+            .toLowerCase()
+            .includes(codigoMensagem.toLowerCase())) &&
+        (!descricao ||
+          passoTeste.descricao.toLowerCase().includes(descricao.toLowerCase()))
+      );
+    });
+
+  const filteredCenarios =
+    cenarios &&
+    cenarios.filter((cenario) =>
+      cenario.descricao.toLowerCase().includes(cenarioSearch.toLowerCase())
     );
-  });
 
-  const filteredCenarios = cenarios.filter((cenario) =>
-    cenario.descricao.toLowerCase().includes(cenarioSearch.toLowerCase())
-  );
+  const paginatedCenarios =
+    filteredCenarios &&
+    filteredCenarios.slice(
+      (cenariosPage - 1) * itemsPerPage,
+      cenariosPage * itemsPerPage
+    );
 
-  const paginatedCenarios = filteredCenarios.slice(
-    (cenariosPage - 1) * itemsPerPage,
-    cenariosPage * itemsPerPage
-  );
-
-  const paginatedPassosTestes = filteredPassosTestes.slice(
-    (passosTestesPage - 1) * itemsPerPage,
-    passosTestesPage * itemsPerPage
-  );
+  const paginatedPassosTestes =
+    filteredPassosTestes &&
+    filteredPassosTestes.slice(
+      (passosTestesPage - 1) * itemsPerPage,
+      passosTestesPage * itemsPerPage
+    );
 
   const handleOpenModal = (content: PassoTeste) => {
     setModalPassoTeste(content);
@@ -147,33 +155,34 @@ export default function RelatePassoTeste({
                 </TableRow>
               </thead>
               <tbody>
-                {paginatedCenarios.map((cenario) => (
-                  <TableRow
-                    key={cenario.id}
-                    style={{
-                      backgroundColor:
-                        cenario.id === selectedCenario
-                          ? "#f3f4f6"
-                          : "transparent",
-                    }}
-                  >
-                    <TableCell>{cenario.descricao}</TableCell>
-                    <TableCell>
-                      <SelectButton
-                        isSelected={cenario.id === selectedCenario}
-                        onClick={() => handleToggleCenario(cenario.id)}
-                        disabled={
-                          selectedCenario !== null &&
-                          selectedCenario !== cenario.id
-                        }
-                      >
-                        {cenario.id === selectedCenario
-                          ? "Selecionado"
-                          : "Selecionar"}
-                      </SelectButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {paginatedCenarios &&
+                  paginatedCenarios.map((cenario) => (
+                    <TableRow
+                      key={cenario.id}
+                      style={{
+                        backgroundColor:
+                          cenario.id === selectedCenario
+                            ? "#f3f4f6"
+                            : "transparent",
+                      }}
+                    >
+                      <TableCell>{cenario.descricao}</TableCell>
+                      <TableCell>
+                        <SelectButton
+                          isSelected={cenario.id === selectedCenario}
+                          onClick={() => handleToggleCenario(cenario.id)}
+                          disabled={
+                            selectedCenario !== null &&
+                            selectedCenario !== cenario.id
+                          }
+                        >
+                          {cenario.id === selectedCenario
+                            ? "Selecionado"
+                            : "Selecionar"}
+                        </SelectButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </tbody>
             </Table>
 
@@ -187,18 +196,22 @@ export default function RelatePassoTeste({
               </NavigationButton>
               <span>
                 Página {cenariosPage} de{" "}
-                {Math.ceil(filteredCenarios.length / itemsPerPage)}
+                {filteredCenarios &&
+                  Math.ceil(filteredCenarios.length / itemsPerPage)}
               </span>
               <NavigationButton
                 onClick={() =>
-                  setCenariosPage((prev) =>
-                    Math.min(
-                      prev + 1,
-                      Math.ceil(filteredCenarios.length / itemsPerPage)
-                    )
+                  setCenariosPage(
+                    (prev) =>
+                      filteredCenarios &&
+                      Math.min(
+                        prev + 1,
+                        Math.ceil(filteredCenarios.length / itemsPerPage)
+                      )
                   )
                 }
                 disabled={
+                  filteredCenarios &&
                   cenariosPage * itemsPerPage >= filteredCenarios.length
                 }
               >
@@ -230,25 +243,28 @@ export default function RelatePassoTeste({
               </TableRow>
             </thead>
             <tbody>
-              {paginatedPassosTestes.map((passoTeste) => (
-                <TableRow key={passoTeste.id}>
-                  <TableCell>
-                    <input
-                      type="checkbox"
-                      checked={selectedPassosTestes.includes(passoTeste.id)}
-                      onChange={() => togglePassoTeste(passoTeste.id)}
-                    />
-                  </TableCell>
-                  <TableCell>{passoTeste.codigoMsg}</TableCell>
-                  <TableCell>{passoTeste.descricao}</TableCell>
-                  <TableCell>{passoTeste.canal}</TableCell>
-                  <TableCell>
-                    <DetalhesButton onClick={() => handleOpenModal(passoTeste)}>
-                      Ver Detalhes
-                    </DetalhesButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {paginatedPassosTestes &&
+                paginatedPassosTestes.map((passoTeste) => (
+                  <TableRow key={passoTeste.id}>
+                    <TableCell>
+                      <input
+                        type="checkbox"
+                        checked={selectedPassosTestes.includes(passoTeste.id)}
+                        onChange={() => togglePassoTeste(passoTeste.id)}
+                      />
+                    </TableCell>
+                    <TableCell>{passoTeste.codigoMsg}</TableCell>
+                    <TableCell>{passoTeste.descricao}</TableCell>
+                    <TableCell>{passoTeste.canal}</TableCell>
+                    <TableCell>
+                      <DetalhesButton
+                        onClick={() => handleOpenModal(passoTeste)}
+                      >
+                        Ver Detalhes
+                      </DetalhesButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </tbody>
           </Table>
 
@@ -264,7 +280,8 @@ export default function RelatePassoTeste({
             </NavigationButton>
             <span>
               Página {passosTestesPage} de{" "}
-              {Math.ceil(filteredPassosTestes.length / itemsPerPage)}
+              {filteredPassosTestes &&
+                Math.ceil(filteredPassosTestes.length / itemsPerPage)}
             </span>
             <NavigationButton
               onClick={() =>
@@ -276,6 +293,7 @@ export default function RelatePassoTeste({
                 )
               }
               disabled={
+                filteredPassosTestes &&
                 passosTestesPage * itemsPerPage >= filteredPassosTestes.length
               }
             >

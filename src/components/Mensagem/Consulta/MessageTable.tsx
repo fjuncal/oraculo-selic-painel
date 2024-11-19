@@ -35,23 +35,24 @@ export default function MessageTable({
           </tr>
         </thead>
         <tbody>
-          {messages.map((message) => (
-            <StyledRow key={message.id}>
-              <Td>{message.id}</Td>
-              <Td>{message.correlationId}</Td>
-              <Td>{message.codigoMensagem}</Td>
-              <Td>{message.canal}</Td>
-              <Td>{message.statusFinal}</Td>
-              <Td>{formatDateTime(message.dataInclusao)}</Td>
-              <Td>
-                <ActionButton
-                  onClick={() => onStatusClick(message.correlationId)}
-                >
-                  Ver Status
-                </ActionButton>
-              </Td>
-            </StyledRow>
-          ))}
+          {messages &&
+            messages.map((message) => (
+              <StyledRow key={message.id}>
+                <Td>{message.id}</Td>
+                <Td>{message.correlationId}</Td>
+                <Td>{message.codigoMensagem}</Td>
+                <Td>{message.canal}</Td>
+                <Td>{message.statusFinal}</Td>
+                <Td>{formatDateTime(message.dataInclusao)}</Td>
+                <Td>
+                  <ActionButton
+                    onClick={() => onStatusClick(message.correlationId)}
+                  >
+                    Ver Status
+                  </ActionButton>
+                </Td>
+              </StyledRow>
+            ))}
         </tbody>
       </StyledTable>
     </TableContainer>
