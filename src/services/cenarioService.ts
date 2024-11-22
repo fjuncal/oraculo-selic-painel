@@ -88,3 +88,24 @@ export async function enviarCenario(cenario: any) {
     throw new Error("Erro ao enviar cenário");
   }
 }
+
+export async function uploadPlanilha(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cenarios/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao enviar a planilha:", error);
+    throw new Error("Erro ao enviar a planilha");
+  }
+}
