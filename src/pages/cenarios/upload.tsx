@@ -17,6 +17,7 @@ export default function Upload() {
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
   const handleUpload = async (file: File) => {
+    setUploadStatus(null);
     try {
       await uploadPlanilha(file);
       setSnackbarMessage("Planilha enviada e processada com sucesso!");
