@@ -7,6 +7,7 @@ import {
 import { FiChevronDown, FiChevronUp, FiSend } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 interface PassoTeste {
   id: number;
@@ -45,7 +46,7 @@ export default function CenariosPage() {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -199,7 +200,7 @@ export default function CenariosPage() {
                   <Td>{cenario.id}</Td>
                   <Td>{cenario.descricao}</Td>
                   <Td>{cenario.tipo}</Td>
-                  <Td>{new Date(cenario.dataInclusao).toLocaleDateString()}</Td>
+                  <Td>{formatDateTime(cenario.dataInclusao)}</Td>
                   <Td>
                     <ExpandButton onClick={() => toggleExpand(cenario.id)}>
                       {expandedCenario === cenario.id ? (
