@@ -64,7 +64,7 @@ export default function VisualizacaoCenarios({
           <CenarioContent key={cenario.id} hidden={index !== activeTab}>
             <Header>
               <h3>
-                {cenario.descricao} (ID: {cenario.id})
+                (ID: {cenario.id}) {cenario.descricao}
               </h3>
               <span>Tipo: {cenario.tipo}</span>
             </Header>
