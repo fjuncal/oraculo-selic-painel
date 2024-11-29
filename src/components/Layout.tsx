@@ -10,7 +10,7 @@ import {
   FiFileText,
 } from "react-icons/fi";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logoSelic from "../../public/selic-logo/selic-logo.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -20,6 +20,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     useState(false);
 
   const router = useRouter();
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMenuOpen]);
   return (
     <AppContainer>
       <TopBar>
