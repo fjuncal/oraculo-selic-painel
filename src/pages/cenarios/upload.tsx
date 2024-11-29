@@ -1,5 +1,6 @@
 import SnackbarComponent from "@/components/SnackbarComponent";
 import PlanilhaUpload from "@/components/Upload/PlanilhaUpload";
+import VisualizacaoCenarios from "@/components/Upload/VisualizacaoCenarios";
 import { uploadPlanilha } from "@/services/cenarioService";
 import { useState } from "react";
 import styled from "styled-components";
@@ -13,22 +14,25 @@ export default function Upload() {
   const [uploadStatus, setUploadStatus] = useState<"success" | "error" | null>(
     null
   );
+  const [cenariosCriados, setCenariosCriados] = useState<any[]>([]); // Armazena os dados criados
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
   const handleUpload = async (file: File) => {
     setUploadStatus(null);
     try {
-      await uploadPlanilha(file);
+      const response = await uploadPlanilha(file);
       setSnackbarMessage("Planilha enviada e processada com sucesso!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       setUploadStatus("success");
+      setCenariosCriados(response);
     } catch (error) {
       setSnackbarMessage("Erro ao processar a planilha. Tente novamente.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       setUploadStatus("error");
+      setCenariosCriados([]);
     }
   };
 
@@ -43,9 +47,12 @@ export default function Upload() {
         onClose={handleSnackbarClose}
       />
       {uploadStatus === "success" && (
-        <StatusMessage status="success">
-          Planilha enviada com sucesso!
-        </StatusMessage>
+        <>
+          <StatusMessage status="success">
+            Planilha enviada com sucesso!
+          </StatusMessage>
+          <VisualizacaoCenarios cenarios={cenariosCriados} />
+        </>
       )}
       {uploadStatus === "error" && (
         <StatusMessage status="error">
