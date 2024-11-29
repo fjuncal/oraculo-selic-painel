@@ -48,6 +48,11 @@ export default function CenariosPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  // Redefinir a página para 1 ao alterar os filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
