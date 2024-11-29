@@ -41,7 +41,7 @@ export default function PassoTesteTabela({
       <StyledTable>
         <thead>
           <tr>
-            <Th>Selecionar</Th>
+            {/* <Th>Selecionar</Th> */}
             <Th>ID</Th>
             <Th>Mensagem</Th>
             <Th>Descrição</Th>
@@ -54,13 +54,13 @@ export default function PassoTesteTabela({
           {passosTestes &&
             passosTestes.map((passoTeste) => (
               <StyledRow key={passoTeste.id}>
-                <Td>
+                {/* <Td>
                   <input
                     type="checkbox"
                     checked={selectedPassosTestes.includes(passoTeste.id)}
                     onChange={() => onSelectPassoTeste(passoTeste.id)}
                   />
-                </Td>
+                </Td> */}
                 <Td>{passoTeste.id}</Td>
                 <Td>{passoTeste.codigoMsg}</Td>
                 <Td>{passoTeste.descricao}</Td>
