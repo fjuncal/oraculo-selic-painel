@@ -159,9 +159,9 @@ const LogoContainer = styled.div`
 `;
 
 const StyledImage = styled(Image)`
-  width: 270px;
-  height: auto;
-  max-height: 270px;
+  width: 60%;
+  height: 50%;
+  max-height: 200px;
   margin-right: 8px;
 `;
 
