@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import PassoTesteModal from "../PassoTeste/Consulta/PassoTesteModal"; // Importando o modal
 
 interface PassoTeste {
   id: number;
   descricao: string;
   codigoMsg: string;
   tipoPassoTeste: string;
+  canal: string;
+  contaCedente: string;
+  contaCessionaria: string;
+  emissor: string;
+  valorFinanceiro: string;
+  xml?: string;
+  stringSelic?: string;
+  dataInclusao: string;
 }
 
 interface Cenario {
@@ -23,9 +32,15 @@ export default function VisualizacaoCenarios({
   cenarios,
 }: VisualizacaoCenariosProps) {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [selectedPassoTeste, setSelectedPassoTeste] =
+    useState<PassoTeste | null>(null);
 
   const handleTabChange = (index: number) => {
     setActiveTab(index);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedPassoTeste(null);
   };
 
   return (
@@ -48,7 +63,9 @@ export default function VisualizacaoCenarios({
         {cenarios.map((cenario, index) => (
           <CenarioContent key={cenario.id} hidden={index !== activeTab}>
             <Header>
-              <h3>{cenario.descricao}</h3>
+              <h3>
+                {cenario.descricao} (ID: {cenario.id})
+              </h3>
               <span>Tipo: {cenario.tipo}</span>
             </Header>
             <Table>
@@ -58,6 +75,7 @@ export default function VisualizacaoCenarios({
                   <th>Descrição</th>
                   <th>Mensagem</th>
                   <th>Tipo</th>
+                  <th>Ação</th>
                 </tr>
               </thead>
               <tbody>
@@ -67,6 +85,11 @@ export default function VisualizacaoCenarios({
                     <td>{passo.descricao}</td>
                     <td>{passo.codigoMsg}</td>
                     <td>{passo.tipoPassoTeste}</td>
+                    <td>
+                      <Button onClick={() => setSelectedPassoTeste(passo)}>
+                        Detalhes
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -74,6 +97,18 @@ export default function VisualizacaoCenarios({
           </CenarioContent>
         ))}
       </TabContent>
+
+      {/* Modal */}
+      {selectedPassoTeste && (
+        <PassoTesteModal
+          passoTeste={{
+            ...selectedPassoTeste,
+            xml: selectedPassoTeste?.xml || "", // Garante que xml será uma string
+            stringSelic: selectedPassoTeste?.stringSelic || "", // Garante que stringSelic será uma string
+          }}
+          onClose={handleCloseModal}
+        />
+      )}
     </Container>
   );
 }
@@ -140,5 +175,18 @@ const Table = styled.table`
   td {
     padding: 8px;
     border: 1px solid #ddd;
+  }
+`;
+
+const Button = styled.button`
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+
+  &:hover {
+    background: #3730a3;
   }
 `;
