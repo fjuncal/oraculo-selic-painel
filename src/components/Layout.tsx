@@ -4,7 +4,7 @@ import {
   FiMenu,
   FiHome,
   FiMessageSquare,
-  FiActivity,
+  FiUpload,
   FiFile,
   FiChevronDown,
   FiFileText,
@@ -30,6 +30,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavItem onClick={() => router.push("/")}>
             <FiHome size={20} />
             <span>Início</span>
+          </NavItem>
+          <NavItem onClick={() => router.push("/cenarios/upload")}>
+            <FiUpload size={20} />
+            <span>Carregar</span>
           </NavItem>
 
           {/* Dropdown para Cenários */}
@@ -119,6 +123,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </MobileNavItem>
           <MobileNavItem onClick={() => router.push("/cenarios")}>
             Consultar / Enviar
+          </MobileNavItem>
+          <MobileNavItem onClick={() => router.push("/cenarios/upload")}>
+            Carregar Planilha
           </MobileNavItem>
         </MobileMenu>
       )}
